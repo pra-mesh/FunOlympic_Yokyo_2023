@@ -1,0 +1,24 @@
+﻿@page "/VerifyAccount"
+@attribute [AllowAnonymous]
+@inject ISignUpservices ia
+<h2>VerifyAccount</h2>
+<br/>
+<h2>
+    Please check your email to verify your account.
+</h2>
+<Divider/>
+
+<h3>Resend confirmation
+
+<Button @onclick="btnclick" >
+    Click Here
+</Button>
+    </h3>
+@code {
+    private async Task<bool> btnclick()
+    {
+        string output = await ia.ResendMail();
+
+        return await Task.FromResult(true);
+    }
+}

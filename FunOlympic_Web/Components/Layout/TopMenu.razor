@@ -1,0 +1,101 @@
+﻿@using Blazorise.Localization
+@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
+@inject IAuthenticationService _apiLogic
+
+<Bar @bind-Visible="@topbarVisible" Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Light">
+    <BarBrand Padding="Padding.Is0">
+        <BarItem>
+            <BarLink To="">
+                <BarIcon IconName="customIcon" />
+                Fun Olympic
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="/">Home</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/">News</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/">Live</BarLink>
+            </BarItem>
+        </BarStart>
+        <BarItem>
+            <BarLink To="/">Videos</BarLink>
+        </BarItem>
+        <BarEnd>
+            <CascadingAuthenticationState>
+             <AuthorizeView>
+                <Authorized>
+                <BarItem>
+                        @context.User.Identity?.Name!
+                </BarItem>
+                    <BarItem @onclick="Logout">
+                        Log out
+                </BarItem>
+                </Authorized>
+                 <NotAuthorized>
+                    <BarItem>
+                        <BarLink To="/login">Login</BarLink>
+                    </BarItem>
+                        <BarItem>
+                            <BarLink To="/SignUp">SignUp</BarLink>
+                        </BarItem>
+                    </NotAuthorized>
+             </AuthorizeView>
+             </CascadingAuthenticationState>
+        </BarEnd>
+    </BarMenu>
+</Bar>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await SelectCulture( "en-US" );
+
+        await base.OnInitializedAsync();
+    }
+
+    Task SelectCulture( string name )
+    {
+        LocalizationService!.ChangeLanguage( name );
+
+        return Task.CompletedTask;
+    }
+    RenderFragment customIcon =@<img src="/img/icon.png" style="width:48px; height: 48px" />;
+    private bool topbarVisible = false;
+    private async Task Logout()
+    {
+        var response = await _apiLogic.Logout();
+        if (response)
+        {
+            _navigationManager.NavigateTo("/", true);
+        }
+
+    }
+    Task OnLayoutTypeChecked( string layoutType )
+    {
+        LayoutType = layoutType;
+
+        return LayoutTypeChanged.InvokeAsync( layoutType );
+    }
+
+    [Parameter] public EventCallback<bool> ThemeEnabledChanged { get; set; }
+
+    [Parameter] public EventCallback<bool> ThemeGradientChanged { get; set; }
+
+    [Parameter] public EventCallback<bool> ThemeRoundedChanged { get; set; }
+
+    [Parameter] public EventCallback<string> ThemeColorChanged { get; set; }
+
+    [Parameter] public string? LayoutType { get; set; }
+
+    [Parameter] public EventCallback<string> LayoutTypeChanged { get; set; }
+
+    [Inject] protected ITextLocalizerService? LocalizationService { get; set; }
+
+    [CascadingParameter] protected Theme? Theme { get; set; }
+}

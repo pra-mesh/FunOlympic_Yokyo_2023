@@ -1,0 +1,142 @@
+﻿@page "/login"
+@inject NavigationManager Navigate;
+@inject IAuthenticationService ia;
+@inject INotificationService msg;
+
+<Row>
+    <Column ColumnSize="ColumnSize.Is4.OnDesktop">
+       
+        <div>
+            <h1 style="font-size:25px"> Fun Olympic Yokyo 2023</h1>
+         
+            <Image Source="/img/icon.png" Alt="Fun Olympic"  Style="justify-content:center"/>
+           
+        </div>
+        
+        </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnDesktop">
+        <Card Margin="Margin.Is4.FromBottom" Style="border:none">
+            <CardHeader>
+                <CardTitle>Login</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" Model="@user" ValidateOnLoad="false">
+                    <Validation >
+                        <Field>
+                            <FieldLabel>Email address</FieldLabel>
+                            <TextEdit Placeholder="Enter email" @bind-Text="@user.userName" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                            <FieldHelp>We'll never share your email with anyone else.</FieldHelp>
+                        </Field>
+                    </Validation>
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Password</FieldLabel>
+                            <TextEdit Role="TextRole.Password" Placeholder="Password" @bind-Text="@user.password">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+
+                        </Field>
+                    </Validation>
+
+                    <Field>
+                        <GoogleRecaptcha SuccessCallBack="SuccessCallBack"
+                                         TimeOutCallBack="TimeOutCallBack"
+                                         ServerValidationErrorCallBack="ServerSideValidationError"
+                                         ServerSideValidationHandler="ServerSideValidationHandler">
+                        </GoogleRecaptcha>
+                    </Field>
+                    <Button Color="Color.Primary" Clicked="LoginClicked" Disabled="@isvalid">Submit</Button>
+                <Field>
+                    <Span>@LoginMesssage</Span>
+                </Field>
+                </Validations>
+            </CardBody>
+        </Card>
+    </Column>
+   
+</Row>
+@code {
+    private LoginModel? user;
+    Validations? validationsRef;
+    private bool Disabled = true;
+    private string? errorMessage;
+    private string? captchaResponse;
+    private bool isvalid = true;
+    public string LoginMesssage { get; set; } = "";
+    protected override Task OnInitializedAsync()
+    {
+        user = new LoginModel();
+       
+
+        return base.OnInitializedAsync();
+
+    }
+    void TimeOutCallBack(CaptchaTimeOutEventArgs e)
+    {
+        Disabled = true;
+        isvalid = true;
+        Console.WriteLine($"Captcha Time Out with message {e.ErrorMessage}");
+        errorMessage = $"Captcha Timeout: {e.ErrorMessage}";
+    }
+
+    void SuccessCallBack(CaptchaSuccessEventArgs e)
+    {
+       
+        captchaResponse = e.CaptchaResponse;
+        Disabled = false;
+        base.StateHasChanged();
+    }
+    private void ServerSideValidationError(CaptchaServerSideValidationErrorEventArgs e)
+    {
+        Disabled = true;
+        errorMessage = $"Captcha server side validation error: {e.ErrorMessage}";
+    }
+    private async Task<ServerSideCaptchaValidationResultModel> ServerSideValidationHandler(ServerSideCaptchaValidationRequestModel requestModel)
+    {
+        using var httpClient = new HttpClient();
+        isvalid = false;
+        return new ServerSideCaptchaValidationResultModel(true, "Success");
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+    }
+
+    async Task LoginClicked()
+    {
+        if (await validationsRef!.ValidateAll())
+        {
+            string output = await ia.login(user);
+            LoginMesssage = output.ToString();
+            if (LoginMesssage.ToLower() == "success")
+            {
+                Navigate.NavigateTo("/");
+
+            }
+            if (LoginMesssage.ToLower() == "emailverify")
+            {
+                Navigate.NavigateTo("/VerifyAccount");
+
+            }
+            if (LoginMesssage.ToLower() == "disabled")
+            {
+                Navigate.NavigateTo("/Disabled");
+
+            }
+             msg.Info(LoginMesssage, "Login");
+           
+        }
+    }
+
+   
+
+
+}
+나는 당신을 섹스하고 싶어

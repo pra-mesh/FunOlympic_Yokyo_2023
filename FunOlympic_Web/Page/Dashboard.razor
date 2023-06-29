@@ -1,0 +1,232 @@
+﻿
+@attribute [AllowAnonymous]
+@page "/"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<Row Margin="Margin.Is2.OnAll" >
+
+    <Column ColumnSize="ColumnSize.Is8">
+        <Heading Size="HeadingSize.Is4">
+            Scores
+        </Heading>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is1.Is3.WithOffset">
+       
+            <Anchor To="/Scores">Show All</Anchor>>
+       
+    </Column>
+</Row>
+<Row Style="background:white" Margin="Margin.Is2.OnAll">
+
+    <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12.OnMobile">
+        <Row>
+            <Column ColumnSize="ColumnSize.Is6" Flex="Flex.AlignItems.Stretch" Border="Border.Is1.OnEnd">
+                <Field Style="width:100%">
+                    <FieldLabel>Date</FieldLabel>
+                    <DateEdit TValue="DateTime?" Padding="Padding.Is0.FromStart" />
+                </Field>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is6" Flex="Flex.AlignItems.Stretch" Border="Border.Is1.OnEnd">
+                <Field Style="width:100%">
+                    <FieldLabel>Select Game</FieldLabel>
+                    <Select TValue="int">
+                        @{
+                            for (var i = 1; i <= 5; i++)
+                            {
+                                string[] array = new string[] { "One", "Two", "Three", "Four", "Five" };
+                                <SelectItem Value="@i">@array</SelectItem>
+                            }
+                        }
+                    </Select>
+                </Field>
+            </Column>
+        </Row>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch" Border="Border.Is1.OnEnd">
+        <Anchor To="tests/validations" Class="b-demo-products" TextColor="TextColor.Body">
+            <Field Style="width:100%">
+                <FieldLabel>@Game1</FieldLabel>
+            </Field>
+        </Anchor>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2.OnDesktop" Flex="Flex.AlignItems.Stretch" Border="Border.Is1.OnEnd" Display="Display.None.Block.OnMobile">
+        <Field Style="width:100%">
+            <FieldLabel>@Game2</FieldLabel>
+        </Field>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2.OnDesktop" Flex="Flex.AlignItems.Stretch" Border="Border.Is1.OnEnd" Display="Display.None.Block.OnMobile">
+        <Field Style="width:100%">
+            <FieldLabel>@Game3</FieldLabel>
+        </Field>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2.OnDesktop" Flex="Flex.AlignItems.Stretch" Border="Border.Is1.OnEnd" Display="Display.None.Block.OnMobile">
+        <Field Style="width:100%">
+            <FieldLabel>@Game4</FieldLabel>
+        </Field>
+    </Column>
+
+</Row>
+<Carousel Margin="Margin.Is2.OnAll">
+    <CarouselSlide Name="1">
+        <Image Source="img/banner.png" Text="Lights image" Display="Display.Block" Width="Width.Is100" />
+  
+   
+
+    </CarouselSlide>
+</Carousel>
+
+ <Heading Size="HeadingSize.Is4">
+        Live Games
+    </Heading>
+
+<Row   VerticalGutter="16" Margin="Margin.Is2.OnAll">
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Anchor To="stream/1" Class="b-demo-products" TextColor="TextColor.Body">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+        </Anchor>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+
+</Row>
+<Heading Size="HeadingSize.Is4" Margin="Margin.Is2.FromTop">
+   Gallery
+</Heading>
+<Row VerticalGutter="16" Margin="Margin.Is2.OnAll">
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch">
+        <Card>
+            <CardImage Source="/img/icon.png" Alt="Placeholder image" Style="object-fit: contain; height:200px" />
+            <CardBody>
+                <CardTitle Size="3">
+                    Card title
+                </CardTitle>
+                <CardText>
+                    This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish muffin icing donut.
+                </CardText>
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+                    Read more <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+   
+</Row>
+<style>
+  
+</style>
+@code {
+    private string Game1 = "Upcoming";
+    private string Game2 = "Upcoming";
+    private string Game3 = "Upcoming";
+    private string Game4 = "Upcoming";
+    private string selectedSlide = "2";
+
+   
+}

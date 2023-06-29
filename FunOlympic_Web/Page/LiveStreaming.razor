@@ -1,0 +1,85 @@
+﻿@page "/stream/{id}"
+@using Microsoft.AspNetCore.SignalR.Client
+<Row >
+    <Column ColumnSize="ColumnSize.Is10.OnWidescreen.Is12.OnMobile">
+        <Video Source="@("https://productdev-aase.streaming.media.azure.net/a77298da-81f4-4a7a-8880-b879bff6358a/5e8432c8-c4a8-4542-8459-9ddebeac5767.ism/manifest(format=mpd-time-cmaf)")" AutoPlay="true" StreamingLibrary="StreamingLibrary.Dash" />
+       @* <Video Source="@("/video/1.mp4")" AutoPlay="true" Ratio="16:9"/>*@
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile">
+
+        <Heading Size="HeadingSize.Is4">
+            Stream Chat
+        </Heading>
+        <ListGroup Flush Style="height:85%">
+            @foreach (var message in messages)
+            {
+                <ListGroupItem>@message.Name: @message.Message</ListGroupItem>
+            }
+        </ListGroup>
+        <Row Padding="Padding.Is0">
+            <Column ColumnSize="ColumnSize.Is10.OnWidescreen.Is12.OnMobile" Padding="Padding.Is0">
+                <TextEdit Placeholder="Send Message" @bind-Text="messageInput" Padding="Padding.Is0" />
+            </Column>
+            <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile" Padding="Padding.Is0">
+        <Button @onclick="SendAsync" Disabled="@(!IsConnected)" >Send</Button>
+        </Column>
+        </Row>
+       
+    </Column>
+</Row>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private HubConnection hubConnection; //for connecting to SignalR
+    private List<ClientMessage> messages = new List<ClientMessage>(); //List of messages to display
+    private string userInput;
+    private string messageInput; //message
+    private readonly HttpClient _httpClient = new HttpClient(); //HttpClient for posting messages
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    private readonly string functionAppBaseUri = "http://localhost:7071/api/";
+
+    protected async override Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(functionAppBaseUri)
+            .Build();
+
+        //Registers handler that will be invoked when the hub method with the specified method name is invoked.
+        hubConnection.On<ClientMessage>("clientMessage", (clientMessage) =>
+        {
+            messages.Add(clientMessage);
+            StateHasChanged(); //This tells Blazor that the UI needs to be updated
+        });
+        var authState = await AuthState;
+        userInput = authState.User.Identity.Name;
+        await hubConnection.StartAsync();
+        Id = Id ?? "1";
+    }
+    async Task SendAsync()
+    {
+
+        var msg = new ClientMessage
+            {
+                Name = userInput,
+                Message = messageInput
+            };
+
+        await _httpClient.PostAsJsonAsync($"{functionAppBaseUri}messages", msg); // post to the function app
+        messageInput = string.Empty; // clear the message from the textbox
+        StateHasChanged(); //update the UI
+    }
+
+    //Check we're connected
+    public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
+
+    public class ClientMessage
+    {
+        public string Name { get; set; }
+        public string Message { get; set; }
+    }
+   
+}

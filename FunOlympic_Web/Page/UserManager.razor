@@ -1,0 +1,102 @@
+﻿@page "/Users"
+<h3>User Manager</h3>
+@inject INotificationService msg;
+<DataGrid TItem="UserInfoModel"
+          Data="@UserInfoModels"
+          ReadData="@OnReadData"
+          TotalItems="@totalEmployees"
+          PageSize="10"
+          ShowPager
+          @bind-SelectedRow ="@user"
+          Editable
+          CommandMode="DataGridCommandMode.ButtonRow"
+          EditMode="DataGridEditMode.Inline"
+          RowUpdated="@save"
+          RowRemoved="@removed"
+          Responsive>
+   <DataGridColumns>   
+    <DataGridColumn Field="@nameof(UserInfoModel.FullName)" Caption="Name"  />
+    <DataGridColumn Field="@nameof(UserInfoModel.Email)" Caption="Email"  />
+    <DataGridColumn Field="@nameof(UserInfoModel.PhoneNumber)" Caption="Phone No." >
+   
+    </DataGridColumn>
+        <DataGridCheckColumn Field="@nameof(UserInfoModel.isDisabled)" Caption="Disabled" Editable Filterable="false" />
+        <DataGridSelectColumn Field="@nameof(UserInfoModel.Roles)" Caption="Disabled" Editable >
+            <EditTemplate>
+                <Select TValue="string" SelectedValue="@((string)( context.CellValue ))" SelectedValueChanged="@(( v ) => { context.CellValue = v;  })">
+                    <SelectItem Value="(string)null"></SelectItem>
+                    <SelectItem Value="@("Admin")">Admin</SelectItem>
+                    <SelectItem Value="@("Normal")">Normal</SelectItem>
+                </Select>
+            </EditTemplate>
+        </DataGridSelectColumn>
+        <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false">
+            <SaveCommandTemplate>
+                <Button ElementId="btnSave" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+            </SaveCommandTemplate>
+            <CancelCommandTemplate>
+                <Button ElementId="btnCancel" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+            </CancelCommandTemplate>
+        </DataGridCommandColumn>
+  </DataGridColumns>
+    <ButtonRowTemplate >
+        <Row Margin="Margin.Is2">
+            <Button Color="Color.Primary" Disabled="(user is null)" Clicked="context.EditCommand.Clicked" Margin="Margin.Is2.OnX">Edit</Button>
+        <Button Color="Color.Danger" Disabled="(user is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
+        
+        </Row>
+    </ButtonRowTemplate>
+   @* <DataGridColumn Field="@nameof(UserInfoModel.Salary)" Caption="Salary" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Editable>
+       <EditTemplate>
+            <NumericEdit TValue="decimal" Value="@((decimal)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+        </EditTemplate>
+    </DataGridColumn>*@
+
+</DataGrid>
+@code {
+    [Inject]
+    public IUserManagerService userManager { get; set; }
+    private List<UserInfoModel> UserInfoModels;
+    bool rememberMe;
+    protected override async Task OnInitializedAsync()
+    {
+        UserInfoModels = await userManager.UserInfoModels();
+        await base.OnInitializedAsync();
+    }
+    private UserInfoModel user;
+    private int totalEmployees;
+
+    private async Task save()
+    {
+
+        await msg.Info($"{user.Id} updated");
+        
+    }
+    private async Task removed()
+    {
+        msg.Info(user.Id);
+
+    }
+    private async Task OnReadData(DataGridReadDataEventArgs<UserInfoModel> e)
+    {
+        if (!e.CancellationToken.IsCancellationRequested)
+        {
+            List<UserInfoModel> response = null;
+
+            // this can be call to anything, in this case we're calling a fictional api
+            //var response = await Http.GetJsonAsync<Employee[]>( $"some-api/employees?page={e.Page}&pageSize={e.PageSize}" );
+            if (e.ReadDataMode is DataGridReadDataMode.Virtualize)
+                response = (await userManager.UserInfoModels()).Skip(e.VirtualizeOffset).Take(e.VirtualizeCount).ToList();
+            else if (e.ReadDataMode is DataGridReadDataMode.Paging)
+                response = (await userManager.UserInfoModels()).Skip((e.Page - 1) * e.PageSize).Take(e.PageSize).ToList();
+            else
+                throw new Exception("Unhandled ReadDataMode");
+
+            if (!e.CancellationToken.IsCancellationRequested)
+            {
+                totalEmployees = (await userManager.UserInfoModels()).Count;
+                UserInfoModels = new List<UserInfoModel>(response); // an actual data for the current page
+            }
+        }
+    }
+}

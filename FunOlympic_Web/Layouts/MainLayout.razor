@@ -1,0 +1,33 @@
+﻿@using FunOlympic_Web.Components.Layout
+
+@inherits LayoutComponentBase
+   <Layout>
+    <LayoutHeader Fixed>
+        <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
+                 ThemeGradientChanged="@OnThemeGradientChanged"
+                 ThemeRoundedChanged="@OnThemeRoundedChanged"
+                 ThemeColorChanged="@OnThemeColorChanged"
+                 />
+    </LayoutHeader>
+  
+        <Layout Sider>
+        <AuthorizeView Roles="Admin">
+            <LayoutSider>
+                <LayoutSiderContent>
+                    <SideMenu />
+                </LayoutSiderContent>
+
+            </LayoutSider>
+
+        </AuthorizeView>
+            <Layout>
+            <LayoutContent Background="Background.Light" Padding="Padding.Is4.OnX.Is4.FromTop" Margin="Margin.Is4.OnAll">
+                    @Body
+                </LayoutContent>
+            <LayoutFooter>
+                <FooterMenu />
+            </LayoutFooter>
+            </Layout>
+        </Layout>
+    </Layout>
+

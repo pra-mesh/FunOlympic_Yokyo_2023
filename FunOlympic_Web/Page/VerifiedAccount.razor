@@ -1,0 +1,32 @@
+﻿@page "/activate"
+@page "/activate/{userID}"
+@attribute [AllowAnonymous]
+@inject NavigationManager NavManager
+@inject IMessageService _message
+@inject ISignUpservices Sup
+<h3>@message</h3>
+
+@code {
+    [Parameter]
+    public string userID { get; set; } = "";
+
+    private string message { get; set; } = "";
+    protected override async Task OnInitializedAsync()
+    {
+        message = userID;
+        await verify();
+        
+
+    }
+    private async Task verify()
+    {
+      
+        message =  await Sup.Activate(userID);
+        await _message.Info(message);
+        if (message.ToLower().Contains("success"))
+        {
+            NavManager.NavigateTo("/");
+        }
+       
+    }
+}

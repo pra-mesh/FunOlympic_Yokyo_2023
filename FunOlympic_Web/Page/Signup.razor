@@ -1,0 +1,242 @@
+﻿@page "/SignUp"
+@inject NavigationManager Navigate;
+@inject ISignUpservices ia;
+@inject INotificationService msg;
+<Row>
+  <Column ColumnSize="ColumnSize.Is8.OnDesktop">
+        <Card Margin="Margin.Is4.FromBottom" Style="border:none">
+            <CardHeader>
+                <CardTitle>Sign Up</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" Model="@user" ValidateOnLoad="false">
+                    <Fields>
+                        
+                        <Validation>
+                        <Field>
+                                <FieldLabel>First Name</FieldLabel>
+                            <TextEdit Placeholder="First Name" @bind-Text="@user.FirstName">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                           </Field>
+                        </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>Last Name</FieldLabel>
+                                <TextEdit Placeholder="Last Name" @bind-Text="@user.LastName">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    
+                    </Fields>
+                    <Fields>
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Email address</FieldLabel>
+                            <TextEdit Placeholder="Enter email" @bind-Text="@user.Email">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                           
+                        </Field>
+                    </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>Contact No</FieldLabel>
+                                <TextEdit Placeholder="Mobile No." @bind-Text="@user.PhoneNumber">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+
+                            </Field>
+                        </Validation>
+                    </Fields>
+                    <Fields>
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Gender</FieldLabel>
+                            <RadioGroup TValue="string" Name="colors" @bind-CheckedValue="@user.Gender">
+                                <Radio Value="@("Male")">Male</Radio>
+                                <Radio Value="@("Female")">Female</Radio>
+                                <Radio Value="@("Other")">Other</Radio>
+                            </RadioGroup>
+
+                        </Field>
+                    </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>Date of Birth</FieldLabel>
+                                <DateEdit TValue="DateTime?" @bind-Date="@selectedDate"/>
+
+                            </Field>
+                        </Validation>
+                    </Fields>
+                    <Fields>
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Password</FieldLabel>
+                            <TextEdit Role="TextRole.Password" Placeholder="Password" @bind-Text="@user.Password" KeyPress="@CalculatePasswordStrength" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                                <FieldHelp>Password strength: <Text TextColor="TextColor.Danger">@passwordMessage</Text></FieldHelp>
+                        </Field>
+                    </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>Password</FieldLabel>
+                                <TextEdit Role="TextRole.Password" Placeholder="Password" @bind-Text="@user.ConfirmPassword">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+
+                            </Field>
+                        </Validation>
+                    </Fields>
+                    <Field>
+                        <GoogleRecaptcha SuccessCallBack="SuccessCallBack"
+                                         TimeOutCallBack="TimeOutCallBack"
+                                         ServerValidationErrorCallBack="ServerSideValidationError"
+                                         ServerSideValidationHandler="ServerSideValidationHandler">
+                        </GoogleRecaptcha>
+                    </Field>
+                    <Button Color="Color.Primary" Clicked="Save" Disabled="@isvalid">Submit</Button>
+                    <Field>
+                        <Span>@LoginMesssage</Span>
+                    </Field>
+                </Validations>
+            </CardBody>
+        </Card>
+  </Column>
+</Row>
+@code {
+    private UserModel user = new UserModel();
+    Validations? validationsRef;
+    private bool Disabled = true;
+    private string? errorMessage;
+    private string? captchaResponse;
+    private bool isvalid = true;
+    public string LoginMesssage { get; set; } = "";
+    private string? SignUpMessage;
+    private string passwordMessage = "weak";
+    private string passwordColor = "white";
+    DateTime? selectedDate;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+
+    }
+    void TimeOutCallBack(CaptchaTimeOutEventArgs e)
+    {
+        Disabled = true;
+        isvalid = true;
+        Console.WriteLine($"Captcha Time Out with message {e.ErrorMessage}");
+        errorMessage = $"Captcha Timeout: {e.ErrorMessage}";
+    }
+
+    void SuccessCallBack(CaptchaSuccessEventArgs e)
+    {
+
+        captchaResponse = e.CaptchaResponse;
+        Disabled = false;
+        base.StateHasChanged();
+    }
+    private void ServerSideValidationError(CaptchaServerSideValidationErrorEventArgs e)
+    {
+        Disabled = true;
+        errorMessage = $"Captcha server side validation error: {e.ErrorMessage}";
+    }
+    private async Task<ServerSideCaptchaValidationResultModel> ServerSideValidationHandler(ServerSideCaptchaValidationRequestModel requestModel)
+    {
+        using var httpClient = new HttpClient();
+        isvalid = false;
+        return new ServerSideCaptchaValidationResultModel(true, "Success");
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+    }
+    private async Task<bool>  Save()
+    {
+        user.DOB = DateOnly.FromDateTime(Convert.ToDateTime(selectedDate));
+        string output = await ia.Signup(user);
+        SignUpMessage = output.ToString();
+        if (SignUpMessage.ToLower() == "success")
+            Navigate.NavigateTo("/VerifyAccount");
+        await msg.Info(SignUpMessage);
+        return await Task.FromResult(true);
+    }
+    private async Task CalculatePasswordStrength()
+    {
+        int score = 0;
+        if (user.Password.Length < 1)
+        {
+            passwordColor = "white";
+            passwordMessage = "";
+            return;
+        }
+        if (user.Password.Length < 8)
+        {
+            passwordColor = "red";
+            passwordMessage = "Weak";
+            score = 1;
+            return;
+        }
+        else if (user.Password.Length < 12)
+            score = 2;
+        else
+            score = 3;
+
+        if (user.Password.Any(char.IsDigit))
+            score++;
+
+        if (user.Password.Any(char.IsLower) && user.Password.Any(char.IsUpper))
+            score++;
+
+        if (user.Password.Any(ch => !char.IsLetterOrDigit(ch)))
+            score++;
+
+        if (user.Password.Distinct().Count() == user.Password.Length)
+            score++;
+
+        switch (score)
+        {
+            case 1:
+                passwordColor = "red";
+                passwordMessage = "Weakest";
+                break;
+            case 2:
+                passwordColor = "orange";
+                passwordMessage = "weak";
+                break;
+            case 3:
+                passwordColor = "orange";
+                passwordMessage = "Moderate";
+                break;
+            case 4:
+                passwordColor = "yellow";
+                passwordMessage = "Strong";
+                break;
+            case 5:
+            case 6:
+                passwordColor = "green";
+                passwordMessage = "Very Strong";
+                break;
+            default:
+                passwordColor = "white";
+                passwordMessage = "";
+                break;
+        }
+    }
+}
