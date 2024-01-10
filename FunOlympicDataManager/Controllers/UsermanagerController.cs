@@ -1,7 +1,6 @@
 ﻿using FunOlympicDataManager.Library.DataAccess.Interface;
 using FunOlympicDataManager.Library.Models;
 using FunOlympicDataManager.Library.ResponseModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunOlympicDataManager.Controllers;

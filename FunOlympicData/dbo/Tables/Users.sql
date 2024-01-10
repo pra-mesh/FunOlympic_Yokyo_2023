@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Users] (
     [Id]                   NVARCHAR (128) NOT NULL,
-    [Email]                NVARCHAR (256) NOT NULL,
+    [Email]                NVARCHAR (256) NOT NULL unique,
     [EmailConfirmed]       BIT            NOT NULL DEFAULT 0,
     [PasswordHash]         VARBINARY(MAX) NOT NULL,
     [PhoneNumber]          NVARCHAR (MAX) NULL,
@@ -9,7 +9,7 @@
     [LockoutEndDateUtc]    DATETIME       NULL,
     [LockoutEnabled]       BIT            NOT NULL DEFAULT 0,
     [AccessFailedCount]    INT            NOT NULL DEFAULT 0,
-    [UserName]             NVARCHAR (256) NOT NULL,
+    [UserName]             NVARCHAR (256) NOT NULL unique,
     [FirstName] NVARCHAR(100) NOT NULL, 
     [LastName] NVARCHAR(100) NOT NULL, 
     [Gender] NVARCHAR(10), 

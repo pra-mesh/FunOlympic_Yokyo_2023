@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using Microsoft.Extensions.Configuration;
 
 namespace FunOlympicDataManager.Library.DataAccess.Internal;
 public class SqlDataAccess : ISqlDataAccess
@@ -36,23 +30,31 @@ public class SqlDataAccess : ISqlDataAccess
         }
     }
 
-    public void SaveData<T>(string storeProcedure, T parameters, string connectionStringName)
+    public int SaveData<T>(string storeProcedure, T parameters, string connectionStringName)
     {
+        int id = 0;
         string connectionString = GetConnectionString(connectionStringName);
         using (IDbConnection connection = new SqlConnection(connectionString))
         {
-            connection.Execute(storeProcedure, parameters,
+            var ret= connection.Execute(storeProcedure, parameters,
                 commandType: CommandType.StoredProcedure);
+            if (ret != null)
+                id = int.Parse(ret.ToString());
         }
+        return id;
     }
 
-    public void SaveDataQ<T>(string commantText, T parameters, string connectionStringName)
+    public int SaveDataQ<T>(string commantText, T parameters, string connectionStringName)
     {
+        int id=0;
         string connectionString = GetConnectionString(connectionStringName);
         using (IDbConnection connection = new SqlConnection(connectionString))
         {
-            var ret = connection.ExecuteScalar(commantText, parameters, commandType: CommandType.Text);
+            var ret = connection.Execute(commantText, parameters, commandType: CommandType.Text);
+            if(ret!=null)
+                id = int.Parse(ret.ToString());
         }
+        return id;
     }
     public T LoadFirstData<T, U>(string commandText, U parameters, string connectionStringName)
     {

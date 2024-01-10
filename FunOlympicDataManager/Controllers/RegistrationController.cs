@@ -2,7 +2,6 @@
 using FunOlympicDataManager.Library.DataAccess.Interface;
 using FunOlympicDataManager.Library.Models;
 using FunOlympicDataManager.Library.ResponseModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunOlympicDataManager.Controllers;
@@ -22,7 +21,7 @@ public class RegistrationController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     public UsersResponse Registration(UserModel userModel) => _registration.Registration(userModel);
-    
+
     [HttpGet("{id}")]
     public UsersResponse UserInfo(string id) => _registration.UserInfo(id);
     [AllowAnonymous]
@@ -44,4 +43,15 @@ public class RegistrationController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
         }
     }
+    [AllowAnonymous]
+    [HttpPost("changepassword")]
+    public StringResponse changepassword(LoginModel lm) => _registration.changepassword(lm);
+    [AllowAnonymous]
+    [HttpPost("sendresetcode")]
+    public async Task<StringResponse> SendResetCodeAsync(MailData lm) =>await _registration.SendResetCodeAsync(lm);
+    
+    [AllowAnonymous]
+    [HttpPost("RestCodeValid")]
+    public StringResponse SendResetCodeAsync(PasswordReset lm) =>  _registration.RestCodeValid(lm);
+
 }

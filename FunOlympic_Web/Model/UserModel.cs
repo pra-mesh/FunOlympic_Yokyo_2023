@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace FunOlympic_Web.Model;
 public class UserModel
 {
-  
+
     public string Id { get; set; } = "";
     [Required]
     [DataType(DataType.EmailAddress)]
@@ -19,22 +19,45 @@ public class UserModel
     public string LastName { get; set; } = "";
     [Required]
     [PasswordVerifer]
-   // [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$_!%*?&])[A-Za-z\d$@$_!%*?&]{8,}$" , 
-        //ErrorMessage = "Password must contain: Minimum 8 characters atleast 1 UpperCase Alphabet, 1 LowerCase Alphabet, 1 Number and 1 Special Character")]
+    // [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$_!%*?&])[A-Za-z\d$@$_!%*?&]{8,}$" , 
+    //ErrorMessage = "Password must contain: Minimum 8 characters atleast 1 UpperCase Alphabet, 1 LowerCase Alphabet, 1 Number and 1 Special Character")]
     [DataType(DataType.Password)]
-  
+
     [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
     public string Password { get; set; } = "";
     [Required]
     [Compare("Password",
         ErrorMessage = "Password and Confirm Password must match")]
-    public string ConfirmPassword { get; set; }
+    public string? ConfirmPassword { get; set; }
 
     [RegularExpression("Male|Female|Other", ErrorMessage = "{0} Invalid Value {1}.")]
     public string Gender { get; set; } = "Male";
-    public DateOnly DOB { get; set; } = DateOnly.FromDateTime( DateTime.Now);
+    public DateTime DOB { get; set; } = DateTime.Now;
 
 
+}
+
+public class ResetViewModel
+{
+    [Required]
+    [DataType(DataType.EmailAddress)]
+    [EmailAddress]
+    public string Email { get; set; } = "";
+    [Required]
+    [PasswordVerifer]
+    // [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$_!%*?&])[A-Za-z\d$@$_!%*?&]{8,}$" , 
+    //ErrorMessage = "Password must contain: Minimum 8 characters atleast 1 UpperCase Alphabet, 1 LowerCase Alphabet, 1 Number and 1 Special Character")]
+    [DataType(DataType.Password)]
+
+    [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
+    public string Password { get; set; } = "";
+    [Required]
+    [Compare("Password",
+        ErrorMessage = "Password and Confirm Password must match")]
+    public string? ConfirmPassword { get; set; }
+    [Required]
+    [MaxLength(6)]
+    public string? ResetCode { get; set; }
 }
 
 
@@ -63,8 +86,8 @@ public class UserInfoModel
 
     public bool isDisabled { get; set; } = false;
 
-    public string FullName 
+    public string FullName
     {
-        get { return FirstName + " " + LastName; }  
+        get { return FirstName + " " + LastName; }
     }
 }

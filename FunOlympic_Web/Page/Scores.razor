@@ -1,7 +1,95 @@
 ﻿@page "/Scores"
 @attribute [Authorize]
-<h3>Scores</h3>
+@inject IGamesService gameService;
+<Row Margin="Margin.Is2.OnAll">
+    <Column ColumnSize="ColumnSize.Is2.OnDesktop.Is4.OnTablet">
+        <Field Horizontal>
+            <FieldLabel ColumnSize="ColumnSize.Is2">Date</FieldLabel>
+            <FieldBody ColumnSize="ColumnSize.Is10">
+                <DateEdit TValue="DateTime?" Padding="Padding.Is0.FromStart" Date="@selectedDate" DateChanged="@OnDateChanged" />
+            </FieldBody>
+        </Field>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is3">
+        <Field Horizontal>
+            <FieldLabel ColumnSize="ColumnSize.Is4">Select Game</FieldLabel>
+            <FieldBody ColumnSize="ColumnSize.Is8">
+                <Select TValue="int" SelectedValue="@gameid" SelectedValueChanged="@changegame">
+                    @{
+                        <SelectItem Value=0>All</SelectItem>
+                        foreach (GameListModel g in gamelist)
+                        {
+                            <SelectItem Value="@g.Id">@g.GameName</SelectItem>
+                        }
+                    }
+                </Select>
+            </FieldBody>
+        </Field>
+    </Column>
+</Row>
+<Row>
+    @foreach (ScoreModel sc in _scores)
+    {
+        <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is4.OnTablet.Is12.OnMobile" Flex="Flex.AlignItems.Stretch" Padding="Padding.Is2.OnAll"
+                Display="Display.None.Block.OnMobile">
+            <Card>
+                <Field Style="width:100%;" Border="Border.Is1.OnAll" Margin="Margin.Is0.FromBottom">
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is6.OnDesktop" TextAlignment="TextAlignment.Center">
+                            <h4 style="font-weight:900">@sc.GameName</h4>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is6.OnDesktop" TextAlignment="TextAlignment.Center">
+                            <h4>@sc.GameDate.ToShortDateString()</h4>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is5.OnDesktop" TextAlignment="TextAlignment.Center">
+                            <h4>@sc.Team1</h4>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is2.OnDesktop" TextAlignment="TextAlignment.Center">
+                            <h4>vs</h4>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is5.OnDesktop" TextAlignment="TextAlignment.Center">
+                            <h4>@sc.team2</h4>
+                        </Column>
+                    </Row>
+                    <Row Margin="Margin.Is0.FromBottom">
+                        <Column ColumnSize="ColumnSize.Is5.OnDesktop" TextAlignment="TextAlignment.Center">
+                            <h4>@sc.team1Score</h4>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is2.OnDesktop" TextAlignment="TextAlignment.Center">
+
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is5.OnDesktop" TextAlignment="TextAlignment.Center">
+                            <h4>@sc.team2Score</h4>
+                        </Column>
+                    </Row>
+                </Field>
+            </Card>
+        </Column>
+    }
+</Row>
 
 @code {
+    List<ScoreModel> _scores = new();
+    List<GameListModel> gamelist = new();
+    private int gameid = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        _scores = await gameService.ScoresList(gameid);
+        gamelist = await gameService.GameLists();
+        await base.OnInitializedAsync();
 
+    }
+    DateTime? selectedDate = DateTime.Now;
+
+    void OnDateChanged(DateTime? date)
+    {
+        selectedDate = date;
+    }
+    async Task changegame(int value)
+    {
+        gameid = value;
+        _scores = await gameService.ScoresList(gameid);
+    }
 }

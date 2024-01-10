@@ -1,0 +1,192 @@
+﻿@attribute [Authorize(Roles ="Admin")]
+@page "/UpdateScores"
+<h3>Update Scores</h3>
+@inject INotificationService msg;
+<Row Style="width:100%">
+    <FieldLabel>Select Game</FieldLabel>
+
+    <Select TValue="int" SelectedValue="@gameid" SelectedValueChanged="@changegame">
+        @{
+            <SelectItem Value=0>All</SelectItem>
+            foreach (GameListModel g in gamelist)
+            {
+                <SelectItem Value="@g.Id">@g.GameName</SelectItem>
+            }
+        }
+    </Select>
+</Row>
+<DataGrid @ref="dataGrid"
+    TItem="ScoreModel"
+          Data="@Scores"
+          ReadData="@OnReadData"
+          TotalItems="@totalusers"
+          PageSize="10"
+          ShowPager
+          @bind-SelectedRow ="@score"
+          Editable
+          CommandMode="DataGridCommandMode.ButtonRow"
+          EditMode="DataGridEditMode.Inline"
+          RowInserted="@add"
+          RowUpdated="@save"
+          RowRemoved="@removed"
+          Responsive>
+   <DataGridColumns> 
+        <DataGridSelectColumn Field="@nameof(ScoreModel.GameName)" Caption="Game Type" Editable>
+            <EditTemplate>
+                <Select TValue="string" SelectedValue="@((string)( context.CellValue ))" SelectedValueChanged="@(( v ) => { context.CellValue = v; 
+context.UpdateCell( nameof( ScoreModel.GameID ),  GameidfromGame( v ));})">
+                    @{
+                        
+                        foreach (GameListModel g in gamelist)
+                        {
+                            <SelectItem Value="@g.GameName">@g.GameName</SelectItem>
+                        }
+                    }
+                </Select>
+            </EditTemplate>
+        </DataGridSelectColumn>
+    <DataGridDateColumn Field="@nameof(ScoreModel.GameDate)" Caption="Date"  Editable>
+     <DisplayTemplate>
+        @{
+           var date = (context as ScoreModel)?.GameDate;
+            if ( date != null )
+            {
+                @($"{date.Value.ToShortDateString()} ")
+            }
+        }
+       
+    </DisplayTemplate>
+        </DataGridDateColumn>
+        <DataGridColumn Field="@nameof(ScoreModel.GameID)" Caption="GameID" Editable Display="Display.None" />
+        <DataGridColumn Field="@nameof(ScoreModel.Team1)" Caption="First team" Editable />
+         <DataGridColumn Field="@nameof(ScoreModel.team1Score)" Caption="Score"  Editable>
+        <EditTemplate>
+        <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+        </EditTemplate>
+        </DataGridColumn>
+        <DataGridColumn Field="@nameof(ScoreModel.team2)" Caption="Second team" Editable />
+        <DataGridColumn Field="@nameof(ScoreModel.team2Score)" Caption="Score" Editable>
+            <EditTemplate>
+                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+            </EditTemplate>
+        </DataGridColumn>
+        <DataGridColumn Field="@nameof(ScoreModel.Description)" Caption="Description" Editable />
+        
+        <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false">
+            <SaveCommandTemplate>
+                <Button ElementId="btnSave" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+            </SaveCommandTemplate>
+            <CancelCommandTemplate>
+                <Button ElementId="btnCancel" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+            </CancelCommandTemplate>
+        </DataGridCommandColumn>
+  </DataGridColumns>
+    <ButtonRowTemplate >
+        <Row Margin="Margin.Is2">
+            <Button Color="Color.Success" Clicked="context.NewCommand.Clicked">New</Button>
+            <Button Color="Color.Primary" Disabled="(score is null)" Clicked="context.EditCommand.Clicked" Margin="Margin.Is2.OnX">Edit</Button>
+        <Button Color="Color.Danger" Disabled="(score is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
+        
+        </Row>
+    </ButtonRowTemplate>
+   @* <DataGridColumn Field="@nameof(ScoreModel.Salary)" Caption="Salary" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Editable>
+       <EditTemplate>
+            <NumericEdit TValue="decimal" Value="@((decimal)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+        </EditTemplate>
+    </DataGridColumn>*@
+
+</DataGrid>
+@code {
+    [Inject]
+    public IGamesService scoresManager { get; set; }
+    public DataGrid<ScoreModel> dataGrid;
+    private List<ScoreModel> Scores;
+    private int gameid = 0;
+    List<GameListModel> gamelist = new List<GameListModel>();
+    bool rememberMe;
+    protected override async Task OnInitializedAsync()
+    {
+        Scores = await scoresManager.ScoresList(0);
+        gamelist = await scoresManager.GameLists();
+        await base.OnInitializedAsync();
+    }
+    private ScoreModel score;
+    private int totalusers;
+    async Task changegame(int value)
+    {
+        gameid = value;
+        Scores = await scoresManager.ScoresList(gameid);
+    }
+    private async Task save()
+    {
+        //UserUpdateModel up = new UserUpdateModel();
+        //up.Id = score.Id;
+        //up.isDisabled = score.isDisabled;
+        //up.Roles = score.Roles;
+        //bool isupdate = await scoresManager.UpdateUserStatus(up);
+        //if(isupdate)
+        //await msg.Info($"{score.Id} updated");
+        //else
+        //    await msg.Warning($"{score.Id} update failed");
+
+    }
+
+    private async Task add(SavedRowItem<ScoreModel,
+                           Dictionary<string, object>> e)
+    {
+
+        await msg.Info($"{e.Item.GameID} updated");
+
+
+        ScoresInsertModel sc = new ScoresInsertModel(e.Item.GameDate,
+        e.Item.Team1, e.Item.team1Score, e.Item.team2, e.Item.team2Score, e.Item.GameID, e.Item.Description);
+        var response = await scoresManager.InsertScores(sc);
+        if(response is null)
+        {
+            await msg.Warning("Failed to insert");
+            return;
+        }
+        await msg.Warning("Saved");
+        //up.Id = score.Id;
+        //up.isDisabled = score.isDisabled;
+        //up.Roles = score.Roles;
+        //bool isupdate = await scoresManager.UpdateUserStatus(up);
+        //if(isupdate)
+        //await msg.Info($"{score.Id} updated");
+        //else
+        //    await msg.Warning($"{score.Id} update failed");
+
+    }
+    private int GameidfromGame(string GameName)
+    {
+        int gameid = gamelist.FirstOrDefault(s => s.GameName == GameName).Id;
+        return gameid;
+    }
+    private async Task removed()
+    {
+        //msg.Info(score.Id);
+
+    }
+    private async Task OnReadData(DataGridReadDataEventArgs<ScoreModel> e)
+    {
+        if (!e.CancellationToken.IsCancellationRequested)
+        {
+            List<ScoreModel> response = null;
+
+            // this can be call to anything, in this case we're calling a fictional api
+            //var response = await Http.GetJsonAsync<Employee[]>( $"some-api/employees?page={e.Page}&pageSize={e.PageSize}" );
+            if (e.ReadDataMode is DataGridReadDataMode.Virtualize)
+                response = (await scoresManager.ScoresList(0)).Skip(e.VirtualizeOffset).Take(e.VirtualizeCount).ToList();
+            else if (e.ReadDataMode is DataGridReadDataMode.Paging)
+                response = (await scoresManager.ScoresList(0)).Skip((e.Page - 1) * e.PageSize).Take(e.PageSize).ToList();
+            else
+                throw new Exception("Unhandled ReadDataMode");
+
+            if (!e.CancellationToken.IsCancellationRequested)
+            {
+                totalusers = (await scoresManager.ScoresList(0)).Count;
+                Scores = new List<ScoreModel>(response); // an actual data for the current page
+            }
+        }
+    }
+}

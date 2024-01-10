@@ -1,8 +1,8 @@
 ﻿namespace FunOlympic_Web.Model.ResponseModel;
-    public class UsersResponse : BaseResponse
-    {
-        public UserModel ? data { get; set; }
-    }
+public class UsersResponse : BaseResponse
+{
+    public UserModel? data { get; set; }
+}
 
 public class UsersInfoResponse : BaseResponse
 {

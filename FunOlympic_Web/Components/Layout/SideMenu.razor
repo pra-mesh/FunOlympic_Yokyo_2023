@@ -1,14 +1,7 @@
 ﻿<Bar Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Tablet" ThemeContrast="ThemeContrast.Dark"
      Mode="BarMode.VerticalInline" CollapseMode="BarCollapseMode.Small">
     <BarToggler />
-    <BarBrand>
-        <BarItem>
-            <BarLink To="">
-                <BarIcon IconName="customIcon" />
-                FunOlympic_Web
-            </BarLink>
-        </BarItem>
-    </BarBrand>
+    
     <BarMenu>
         <BarStart>
             <BarItem>
@@ -18,16 +11,54 @@
                 </BarLink>
             </BarItem>
             <BarItem>
+                <BarLink To="/Users">
+                    <BarIcon IconName="IconName.User" />
+                    User
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/UpdateScores">
+                    <BarIcon IconName="IconName.Poll" />
+                    Update Score
+                </BarLink>
+            </BarItem>
+            <BarItem>
                 <BarDropdown @bind-Visible="pagesBarVisible">
                     <BarDropdownToggle>
-                        <BarIcon IconName="IconName.Edit" />
-                        User Manager
+                        <BarIcon IconName="IconName.DotCircle" />
+                       Live
                     </BarDropdownToggle>
                     <BarDropdownMenu>
-                        <BarDropdownItem To="/Users">Simple Form</BarDropdownItem>
+                        <BarDropdownItem To="/AddLives">
+                            <BarIcon IconName="IconName.Add" />
+                            Add lives
+                        </BarDropdownItem>
+                        <BarDropdownItem To="/UpdateLive">
+                            <BarIcon IconName="IconName.Edit" />
+                            All lives
+                        </BarDropdownItem>
                     </BarDropdownMenu>
                 </BarDropdown>
             </BarItem>
+            <BarItem>
+                <BarDropdown @bind-Visible="pagesBarVisible">
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.Video" />
+                        Highlights
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem To="/AddHighlight">
+                            <BarIcon IconName="IconName.Add" />
+                            Add Highlights
+                        </BarDropdownItem>
+                        <BarDropdownItem To="/UpdateHighlights">
+                            <BarIcon IconName="IconName.Edit" />
+                            All Highlights
+                        </BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+
         </BarStart>
        @* <BarEnd>
             <BarItem>

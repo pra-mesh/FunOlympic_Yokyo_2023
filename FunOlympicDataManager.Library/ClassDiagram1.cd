@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.GameData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMAABAAIAAABAAAQAEAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Implementation\GameData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.GameListData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Implementation\GameListData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.LoginData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>DataAccess\Implementation\LoginData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.MailService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Implementation\MailService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.RegistrationData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAAAABAAgABAAAAAAACAAAAAABAAAAAAAAAEAQA=</HashCode>
+      <FileName>DataAccess\Implementation\RegistrationData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.SchedulesData" Collapsed="true">
+    <Position X="25.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Implementation\SchedulesData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.ScoresData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAggAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>DataAccess\Implementation\ScoresData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Implementation.UsermanagerData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAABAAAAAAAAAAAAACAAAAABAAAAAgCAAAAAA=</HashCode>
+      <FileName>DataAccess\Implementation\UsermanagerData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.DataAccess.Internal.SqlDataAccess" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAEAAAAAAAgQAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Internal\SqlDataAccess.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Helper.ImageUpload" Collapsed="true">
+    <Position X="28.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helper\ImageUpload.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.GameListModel" Collapsed="true">
+    <Position X="27" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\GameListModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.GamesInsert" Collapsed="true">
+    <Position X="27.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CABAAAAAAAAkAAgAAAEAAAAAIgAAAIAAAAAQAAAIAwA=</HashCode>
+      <FileName>Models\Games.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.GameImg" Collapsed="true">
+    <Position X="28.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\Games.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.GameModel" Collapsed="true">
+    <Position X="26.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Games.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.LoginModel" Collapsed="true">
+    <Position X="23.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEAAAA=</HashCode>
+      <FileName>Models\LoginModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.MailData" Collapsed="true">
+    <Position X="25.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAEAAAAAAAIAAAAIABAACAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\MailData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.MailSettingModel" Collapsed="true">
+    <Position X="28.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAEAAAAAAAAAAQAAAAAAAACAAACAACAQBAAAAAAAA=</HashCode>
+      <FileName>Models\MailSettingModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.ScoresInsertModel" Collapsed="true">
+    <Position X="30.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAgAAAAAAEAAAAAAgAAAAAAAAAQAAAIAQA=</HashCode>
+      <FileName>Models\ScoresModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.ScoreModel" Collapsed="true">
+    <Position X="27" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABCAAAAAAAgAAAAAAEAAAAAAgAAAAAAAAAwAAAIAQA=</HashCode>
+      <FileName>Models\ScoresModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.TokenModel" Collapsed="true">
+    <Position X="25.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAQAAAgAAAAAAAAAAAAgAAAAAAAQQBAAAAAAA=</HashCode>
+      <FileName>Models\TokenModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.UserInfoModel" Collapsed="true">
+    <Position X="28.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAACCAAAACAAAAAQAEAAgAAAAAAAAABAAAAAAg=</HashCode>
+      <FileName>Models\UserInfoModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.UserUpdateModel" Collapsed="true">
+    <Position X="25.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Models\UserInfoModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Models.UserModel" Collapsed="true">
+    <Position X="23.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAACCAAAACAAAAAQAAAAAAAAAACAAAAAAAAAAg=</HashCode>
+      <FileName>Models\UserModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Model.UserIDModel" Collapsed="true">
+    <Position X="27" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\UserIDModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Model.RefreshTokenModel" Collapsed="true">
+    <Position X="30.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAIAEAgAAAAEAABgAgAAAAAIAQAIQAAAAABBAA=</HashCode>
+      <FileName>ResponseModel\RefreshToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Model.RefreshTokenResponse" Collapsed="true">
+    <Position X="20.75" Y="2" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.5" />
+        <Point X="18" Y="2.368" />
+        <Point X="20.75" Y="2.368" />
+        <Point X="20.75" Y="2.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\RefreshToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.Model.RefreshTokenListResponse" Collapsed="true">
+    <Position X="20.75" Y="4" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.5" />
+        <Point X="18" Y="4.375" />
+        <Point X="20.75" Y="4.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\RefreshToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.BadRequestResponse" Collapsed="true">
+    <Position X="12.5" Y="6" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="6.062" />
+        <Point X="18" Y="6.267" />
+        <Point X="14" Y="6.267" />
+        <Point X="14" Y="6.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\BadRequestResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.BaseResponse" Collapsed="true">
+    <Position X="17.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAACAAAAA=</HashCode>
+      <FileName>ResponseModel\BaseResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.BooleanResponse" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\BooleanResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.GameListResponse" Collapsed="true">
+    <Position X="12.5" Y="7.25" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="6.062" />
+        <Point X="18" Y="7.688" />
+        <Point X="14" Y="7.688" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\GameListResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.GameResponse" Collapsed="true">
+    <Position X="20.75" Y="0.5" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.5" />
+        <Point X="18" Y="0.875" />
+        <Point X="20.75" Y="0.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\GameResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.ListGameResponse" Collapsed="true">
+    <Position X="20.75" Y="3" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.5" />
+        <Point X="18" Y="3.375" />
+        <Point X="20.75" Y="3.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\GameResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.LoginResponse" Collapsed="true">
+    <Position X="21" Y="6.5" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="6.062" />
+        <Point X="18" Y="6.938" />
+        <Point X="21" Y="6.938" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\LoginResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.ScoresResponse" Collapsed="true">
+    <Position X="12.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\ScoresResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.ScoresListResponse" Collapsed="true">
+    <Position X="12.5" Y="4" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.5" />
+        <Point X="18" Y="4.375" />
+        <Point X="14" Y="4.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\ScoresResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.StringResponse" Collapsed="true">
+    <Position X="12.5" Y="3" Width="1.5" />
+    <InheritanceLine Type="FunOlympicDataManager.Library.ResponseModel.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.5" />
+        <Point X="18" Y="3.25" />
+        <Point X="14" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\StringResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.UsersResponse" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\UsersResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FunOlympicDataManager.Library.ResponseModel.UsersListResponse" Collapsed="true">
+    <Position X="21" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ResponseModel\UsersResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Interface.IGameData" Collapsed="true">
+    <Position X="34.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMAAAAAIAAABAAAQAEAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Interface\IGameData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Interface.IGameListData" Collapsed="true">
+    <Position X="36" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Interface\IGameListData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Interface.ILoginData" Collapsed="true">
+    <Position X="37.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>DataAccess\Interface\ILoginData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Interface.IMailService" Collapsed="true">
+    <Position X="39.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Interface\IMailService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Interface.IRegistrationData" Collapsed="true">
+    <Position X="41.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAgABAAAAAAACAAAAAABAAAAAAAAAEAAA=</HashCode>
+      <FileName>DataAccess\Interface\IRegistrationData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Interface.IScoresData" Collapsed="true">
+    <Position X="34.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>DataAccess\Interface\IScoresData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Interface.IUsermanagerData" Collapsed="true">
+    <Position X="37.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAABAAAAAgCAAAAAA=</HashCode>
+      <FileName>DataAccess\Interface\IUsermanagerData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FunOlympicDataManager.Library.DataAccess.Internal.ISqlDataAccess" Collapsed="true">
+    <Position X="36" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAEAAAAAAAgQAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Internal\ISqlDataAccess.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

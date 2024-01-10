@@ -1,10 +1,11 @@
-﻿@page "/Users"
+﻿@attribute [Authorize(Roles ="Admin")]
+@page "/Users"
 <h3>User Manager</h3>
 @inject INotificationService msg;
 <DataGrid TItem="UserInfoModel"
           Data="@UserInfoModels"
           ReadData="@OnReadData"
-          TotalItems="@totalEmployees"
+          TotalItems="@totalUsers"
           PageSize="10"
           ShowPager
           @bind-SelectedRow ="@user"
@@ -21,10 +22,10 @@
    
     </DataGridColumn>
         <DataGridCheckColumn Field="@nameof(UserInfoModel.isDisabled)" Caption="Disabled" Editable Filterable="false" />
-        <DataGridSelectColumn Field="@nameof(UserInfoModel.Roles)" Caption="Disabled" Editable >
+        <DataGridSelectColumn Field="@nameof(UserInfoModel.Roles)" Caption="User Roles" Editable >
             <EditTemplate>
                 <Select TValue="string" SelectedValue="@((string)( context.CellValue ))" SelectedValueChanged="@(( v ) => { context.CellValue = v;  })">
-                    <SelectItem Value="(string)null"></SelectItem>
+                   
                     <SelectItem Value="@("Admin")">Admin</SelectItem>
                     <SelectItem Value="@("Normal")">Normal</SelectItem>
                 </Select>
@@ -64,12 +65,19 @@
         await base.OnInitializedAsync();
     }
     private UserInfoModel user;
-    private int totalEmployees;
+    private int totalUsers;
 
     private async Task save()
     {
-
+        UserUpdateModel up = new UserUpdateModel();
+        up.Id = user.Id;
+        up.isDisabled = user.isDisabled;
+        up.Roles = user.Roles;
+        bool isupdate = await userManager.UpdateUserStatus(up);
+        if(isupdate)
         await msg.Info($"{user.Id} updated");
+        else
+            await msg.Warning($"{user.Id} update failed");
         
     }
     private async Task removed()
@@ -94,7 +102,7 @@
 
             if (!e.CancellationToken.IsCancellationRequested)
             {
-                totalEmployees = (await userManager.UserInfoModels()).Count;
+                totalUsers = (await userManager.UserInfoModels()).Count;
                 UserInfoModels = new List<UserInfoModel>(response); // an actual data for the current page
             }
         }

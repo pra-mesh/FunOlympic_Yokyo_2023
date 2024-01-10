@@ -7,6 +7,7 @@ using FunOlympicDataManager.Library.Models;
 using FunOlympicDataManager.Library.ResponseModel;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,11 +54,14 @@ builder.Services.AddTransient<IUsermanagerData, UsermanagerData>();
 builder.Services.AddTransient<IRegistrationData, RegistrationData>();
 builder.Services.AddTransient<ILoginData, LoginData>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IScoresData, ScoresData>();
+builder.Services.AddTransient<IGameData, GameData>();
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme
 ).AddCookie();
 builder.Services.Configure<MailSettingModel>(builder.Configuration.GetSection(nameof(MailSettingModel)));
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddTransient<IGameListData, GameListData>();
 var app = builder.Build();
 
 app.UseCors(cors => cors
@@ -72,7 +76,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), @"Resources");
+if (!Directory.Exists(pathToSave))
+{
+    // Try to create the directory.
+    DirectoryInfo di = Directory.CreateDirectory(pathToSave);
+}
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
@@ -84,3 +93,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(pathToSave),
+    RequestPath = new PathString("/StaticFiles")
+});

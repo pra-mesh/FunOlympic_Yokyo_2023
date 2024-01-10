@@ -10,8 +10,7 @@
             </CardHeader>
             <CardBody>
                 <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" Model="@user" ValidateOnLoad="false">
-                    <Fields>
-                        
+                    <Fields>                        
                         <Validation>
                         <Field>
                                 <FieldLabel>First Name</FieldLabel>
@@ -31,8 +30,7 @@
                                     </Feedback>
                                 </TextEdit>
                             </Field>
-                        </Validation>
-                    
+                        </Validation>                 
                     </Fields>
                     <Fields>
                     <Validation>
@@ -46,10 +44,10 @@
                            
                         </Field>
                     </Validation>
-                        <Validation>
+                    <Validation>
                             <Field>
                                 <FieldLabel>Contact No</FieldLabel>
-                                <TextEdit Placeholder="Mobile No." @bind-Text="@user.PhoneNumber">
+                                <TextEdit Placeholder="Mobile No." @bind-Text="@user.PhoneNumber" >
                                     <Feedback>
                                         <ValidationError />
                                     </Feedback>
@@ -92,8 +90,8 @@
                     </Validation>
                         <Validation>
                             <Field>
-                                <FieldLabel>Password</FieldLabel>
-                                <TextEdit Role="TextRole.Password" Placeholder="Password" @bind-Text="@user.ConfirmPassword">
+                                <FieldLabel>Confirm Password</FieldLabel>
+                                <TextEdit Role="TextRole.Password" Placeholder="Confirm Password" @bind-Text="@user.ConfirmPassword">
                                     <Feedback>
                                         <ValidationError />
                                     </Feedback>
@@ -169,7 +167,7 @@
     }
     private async Task<bool>  Save()
     {
-        user.DOB = DateOnly.FromDateTime(Convert.ToDateTime(selectedDate));
+        user.DOB =Convert.ToDateTime(selectedDate);
         string output = await ia.Signup(user);
         SignUpMessage = output.ToString();
         if (SignUpMessage.ToLower() == "success")

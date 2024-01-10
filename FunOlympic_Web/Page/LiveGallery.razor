@@ -1,0 +1,45 @@
+﻿@page "/LiveGallery"
+@attribute [Authorize]
+@inject IGamesService gameService;
+<h3>Live Gallery</h3>
+
+    @foreach (GameListModel gm in _gameList)
+    {
+        <h3>@gm.GameName</h3>
+        <Row Margin="Margin.Is4.OnY.Is2.OnX" >
+            @foreach (GameModel sc in _games.Where(n=> n.GameID == gm.Id))
+            {
+                <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile" Flex="Flex.AlignItems.Stretch" Margin="Margin.Is2.OnX">
+                    <Anchor To=@($"stream/{@sc.id}") Class="b-demo-products" TextColor="TextColor.Body">
+                        <Card>
+                            <CardImage Source="@sc.photoloc" Alt="/img/icon.png" Style="object-fit: contain; height:200px;  width:300px" />
+                            <CardBody>
+                                <CardTitle Size="3">
+                                    @sc.Team1 vs @sc.team2
+                                </CardTitle>
+                                <CardText>
+                                    @sc.team1Score vs @sc.team2Score
+                                </CardText>
+                                <CardText>
+                                    @sc.Description
+                                </CardText>
+                            </CardBody>
+                        </Card>
+                    </Anchor>
+                </Column>
+
+            }
+        </Row>
+    <Divider />
+    }
+
+@code {
+    List<GameListModel> _gameList = new();
+    List<GameModel> _games = new();
+    protected override async Task OnInitializedAsync()
+    {
+        _gameList = await gameService.LiveGameLists();
+        _games = await gameService.LiveGames(0);
+        await base.OnInitializedAsync();
+    }
+}

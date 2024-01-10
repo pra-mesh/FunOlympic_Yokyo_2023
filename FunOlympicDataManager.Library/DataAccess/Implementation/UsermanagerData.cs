@@ -2,11 +2,6 @@
 using FunOlympicDataManager.Library.DataAccess.Internal;
 using FunOlympicDataManager.Library.Models;
 using FunOlympicDataManager.Library.ResponseModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FunOlympicDataManager.Library.DataAccess.Implementation;
 public class UsermanagerData : IUsermanagerData
@@ -24,7 +19,7 @@ public class UsermanagerData : IUsermanagerData
     {
         UsersListResponse sr = new UsersListResponse();
         List<UserInfoModel> sp;
-        var p = new {  };
+        var p = new { };
         try
         {
             sr.data = _sql.LoadDataq<UserInfoModel, dynamic>("Select * from users order by FirstName,LastName", p, "SqlConn");
@@ -55,7 +50,7 @@ public class UsermanagerData : IUsermanagerData
         }
         try
         {
-          
+
             var p = new { userID, isDisabled };
 
             _sql.SaveDataQ<dynamic>("update users set isDisabled=@isDisabled where Id=@userID", p, "SqlConn");
@@ -73,7 +68,7 @@ public class UsermanagerData : IUsermanagerData
 
     }
 
-    public BooleanResponse UpdateRoles(string userID, string Roles )
+    public BooleanResponse UpdateRoles(string userID, string Roles)
     {
         UsersResponse si = _registration.UserInfo(userID);
         BooleanResponse sr = new BooleanResponse();
@@ -86,7 +81,7 @@ public class UsermanagerData : IUsermanagerData
         }
         try
         {
-            
+
             var p = new { userID, Roles };
 
             _sql.SaveDataQ<dynamic>("update users set Roles=@Roles,isDisabled=@isDisabled  where Id=@userID", p, "SqlConn");
@@ -119,7 +114,7 @@ public class UsermanagerData : IUsermanagerData
         try
         {
 
-            var p = new { userID=user.Id, Roles=user.Roles, isDisabled = user.isDisabled };
+            var p = new { userID = user.Id, Roles = user.Roles, isDisabled = user.isDisabled };
 
             _sql.SaveDataQ<dynamic>("update users set Roles=@Roles,isDisabled=@isDisabled  where Id=@userID", p, "SqlConn");
             sr.statusCode = 0;

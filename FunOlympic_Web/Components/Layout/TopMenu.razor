@@ -1,12 +1,15 @@
-﻿@using Blazorise.Localization
+﻿@using Blazored.SessionStorage;
+@using Blazorise.Localization
 @inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
 @inject IAuthenticationService _apiLogic
+@inject ISessionStorageService _localStorage
+@inject IUserManagerService _user
 
 <Bar @bind-Visible="@topbarVisible" Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Light">
     <BarBrand Padding="Padding.Is0">
         <BarItem>
-            <BarLink To="">
+            <BarLink To="/">
                 <BarIcon IconName="customIcon" />
                 Fun Olympic
             </BarLink>
@@ -18,14 +21,14 @@
                 <BarLink To="/">Home</BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="/">News</BarLink>
+                <BarLink To="/Scores">Scores</BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="/">Live</BarLink>
+                <BarLink To="/LiveGallery">Live</BarLink>
             </BarItem>
         </BarStart>
         <BarItem>
-            <BarLink To="/">Videos</BarLink>
+            <BarLink To="/Highlights">Highlights</BarLink>
         </BarItem>
         <BarEnd>
             <CascadingAuthenticationState>
@@ -34,9 +37,23 @@
                 <BarItem>
                         @context.User.Identity?.Name!
                 </BarItem>
-                    <BarItem @onclick="Logout">
-                        Log out
-                </BarItem>
+                 <BarDropdown Margin="Margin.Is5.FromEnd">
+                    <BarDropdownToggle>
+                                
+                                            <BarIcon IconName="customIcon" />
+                                  
+                    </BarDropdownToggle>
+                            <BarDropdownMenu Margin="Margin.Is5.FromEnd">
+                                <BarDropdownItem Clicked="@ShowModal">
+                        Change Password
+                                </BarDropdownItem>
+                                <BarDropdownItem @onclick="Logout">
+                                Log out
+                                </BarDropdownItem>
+                                </BarDropdownMenu>
+                    </BarDropdown>
+                        
+                   
                 </Authorized>
                  <NotAuthorized>
                     <BarItem>
@@ -51,14 +68,63 @@
         </BarEnd>
     </BarMenu>
 </Bar>
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Employee edit</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>User Name</FieldLabel>
+                <TextEdit Placeholder="Enter name..."  @bind-Text="userName" Disabled/>
+            </Field>
+            <Field>
+                <FieldLabel>Old Password</FieldLabel>
+                <TextEdit Role="TextRole.Password" @bind-Text="opassword" Placeholder="Enter old Password..." />
+            </Field>
+            <Field>
+                <FieldLabel>New Password</FieldLabel>
+                <TextEdit Role="TextRole.Password"  @bind-Text="password" Placeholder="Enter new password..." />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="Color.Primary" Clicked="@HideModal">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
 @code {
+    private Modal modalRef;
+
+    private async Task ShowModal()
+    {
+        var Email = await _localStorage.GetItemAsync<string>("Email");
+        await  modalRef.Show();
+        userName = Email;
+    }
+
+    private Task HideModal()
+    {
+        return modalRef.Hide();
+    }
+    private Task savepassword()
+    {
+        LoginModel lm = new LoginModel();
+        lm.password = password;
+        lm.userName = userName;
+        _user.changepassword(lm);
+        return modalRef.Hide();
+    }
     protected override async Task OnInitializedAsync()
     {
         await SelectCulture( "en-US" );
 
         await base.OnInitializedAsync();
     }
-
+    private string userName;
+    private string password;
+    private string opassword;
     Task SelectCulture( string name )
     {
         LocalizationService!.ChangeLanguage( name );

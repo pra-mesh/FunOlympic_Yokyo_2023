@@ -1,6 +1,5 @@
 ﻿//using FunOlympicDataManager.Library.DataAccess.Interface;
 
-using FunOlympicDataManager.Helpers;
 using FunOlympicDataManager.Library.DataAccess.Interface;
 
 namespace FunOlympicDataManager.Authorization;

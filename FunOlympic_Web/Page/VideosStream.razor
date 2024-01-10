@@ -1,0 +1,89 @@
+﻿@page "/videostream/{id}"
+@inject IGamesService gameService;
+@attribute [Authorize]
+@using Microsoft.AspNetCore.SignalR.Client
+<Row Margin="Margin.Is1.OnX" HorizontalGutter="10">
+    <Column ColumnSize="ColumnSize.Is10.OnWidescreen.Is12.OnMobile">
+        
+        <Video Source="@gm.LinktoGame" AutoPlay="true" Ratio="16:9"/>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile">
+
+        <Heading Size="HeadingSize.Is4">
+            Stream Chat
+        </Heading>
+        <ListGroup Flush Style="height:88%">
+            @foreach (var message in messages)
+            {
+                <ListGroupItem>@message.Name: @message.Message</ListGroupItem>
+            }
+        </ListGroup>
+        <Row Padding="Padding.Is0" HorizontalGutter="10">
+            <Column ColumnSize="ColumnSize.Is10.OnWidescreen.Is12.OnMobile" Padding="Padding.Is0">
+                <TextEdit Placeholder="Send Message" @bind-Text="messageInput" Padding="Padding.Is0" />
+            </Column>
+            <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile" Padding="Padding.Is0">
+                <Button @onclick="SendAsync" Disabled="@(!IsConnected)"><Icon Name="IconName.Comment"></Icon></Button>
+        </Column>
+        </Row>
+       
+    </Column>
+</Row>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private HubConnection hubConnection; //for connecting to SignalR
+    private List<ClientMessage> messages = new List<ClientMessage>(); //List of messages to display
+    private string userInput;
+    private string messageInput; //message
+    private readonly HttpClient _httpClient = new HttpClient(); //HttpClient for posting messages
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+    private GameModel gm = new();
+
+    private readonly string functionAppBaseUri = "http://localhost:7071/api/";
+
+    protected async override Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(functionAppBaseUri)
+            .Build();
+
+        //Registers handler that will be invoked when the hub method with the specified method name is invoked.
+        hubConnection.On<ClientMessage>("clientMessage", (clientMessage) =>
+        {
+            messages.Add(clientMessage);
+            StateHasChanged(); //This tells Blazor that the UI needs to be updated
+        });
+        var authState = await AuthState;
+        userInput = authState.User.Identity.Name;
+        await hubConnection.StartAsync();
+        Id = Id ?? "1";
+        gm = await gameService.GamesVideo(Id);
+    }
+    async Task SendAsync()
+    {
+
+        var msg = new ClientMessage
+            {
+                Name = userInput,
+                Message = messageInput
+            };
+
+        await _httpClient.PostAsJsonAsync($"{functionAppBaseUri}messages", msg); // post to the function app
+        messageInput = string.Empty; // clear the message from the textbox
+        StateHasChanged(); //update the UI
+    }
+
+    //Check we're connected
+    public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
+
+    public class ClientMessage
+    {
+        public string Name { get; set; }
+        public string Message { get; set; }
+    }
+   
+}

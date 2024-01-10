@@ -70,11 +70,13 @@
     <Build Include="dbo\Tables\Gamelist.sql" />
     <Build Include="dbo\Tables\Scores2P.sql" />
     <Build Include="dbo\Tables\Games.sql" />
+    <Build Include="dbo\Views\AllScores.sql" />
+    <Build Include="dbo\Views\ALlGames.sql" />
+    <Build Include="dbo\Tables\StreamingChannel.sql" />
+    <Build Include="dbo\Tables\ResetPassword.sql" />
+    <Build Include="dbo\StoreProcedures\spResetpassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FunOlympicData.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="FunOlympicData.refactorlog" />
   </ItemGroup>
 </Project>

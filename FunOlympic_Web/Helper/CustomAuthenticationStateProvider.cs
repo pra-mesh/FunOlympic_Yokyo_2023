@@ -1,9 +1,7 @@
 ﻿
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Security.Principal;
 
 namespace FunOlympic_Web.Helper;
 
@@ -59,7 +57,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
               new Claim("auth", Auth),
                new Claim(ClaimTypes.Role, Roles)
 
-            }, "apiauth_type")) ;
+            }, "apiauth_type"));
         var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
         NotifyAuthenticationStateChanged(authState);
     }

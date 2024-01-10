@@ -1,34 +1,44 @@
 ﻿@page "/stream/{id}"
+@attribute [Authorize]
 @using Microsoft.AspNetCore.SignalR.Client
-<Row >
+@inject IGamesService gameService;
+<h3>Live @gm.gameName @gm.Team1 vs @gm.team2</h3>
+<Row Margin="Margin.Is1.OnX" HorizontalGutter="10" >
     <Column ColumnSize="ColumnSize.Is10.OnWidescreen.Is12.OnMobile">
-        <Video Source="@("https://productdev-aase.streaming.media.azure.net/a77298da-81f4-4a7a-8880-b879bff6358a/5e8432c8-c4a8-4542-8459-9ddebeac5767.ism/manifest(format=mpd-time-cmaf)")" AutoPlay="true" StreamingLibrary="StreamingLibrary.Dash" />
+        <Video Source="@ad" AutoPlay="true" StreamingLibrary="StreamingLibrary.Dash" ControlsList="@controlisnt" />
        @* <Video Source="@("/video/1.mp4")" AutoPlay="true" Ratio="16:9"/>*@
     </Column>
-    <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile">
+    <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile" Border="Border.Rounded.Is1" >
 
         <Heading Size="HeadingSize.Is4">
             Stream Chat
         </Heading>
-        <ListGroup Flush Style="height:85%">
+        <ListGroup Flush Style="height:88%">
             @foreach (var message in messages)
             {
                 <ListGroupItem>@message.Name: @message.Message</ListGroupItem>
             }
         </ListGroup>
-        <Row Padding="Padding.Is0">
-            <Column ColumnSize="ColumnSize.Is10.OnWidescreen.Is12.OnMobile" Padding="Padding.Is0">
+        <Row Padding="Padding.Is0" HorizontalGutter="10">
+            <Column ColumnSize="ColumnSize.Is10.OnWidescreen.Is10.OnMobile" Padding="Padding.Is0">
                 <TextEdit Placeholder="Send Message" @bind-Text="messageInput" Padding="Padding.Is0" />
             </Column>
             <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is12.OnMobile" Padding="Padding.Is0">
-        <Button @onclick="SendAsync" Disabled="@(!IsConnected)" >Send</Button>
-        </Column>
+                <Button @onclick="SendAsync" Disabled="@(!IsConnected)"><Icon Name="IconName.Comment"></Icon></Button>
+            </Column>
         </Row>
-       
+
     </Column>
 </Row>
 
 @code {
+    //
+
+    //string ad = "https://productdev-aase.streaming.media.azure.net/9300ba5b-b34e-42a2-b02b-2b3b4cdc967a/12aa924c-5334-42c3-b0f2-03ab10a7d9db.ism/manifest(format=mpd-time-cmaf)";
+
+    
+    string ad = "https://pd2-productdev-aase.streaming.media.azure.net/b95690e6-500f-432a-a202-d6dac2e69ca9/6df587d7-79ca-4a01-85f8-addbde2d02a3.ism/manifest(format=mpd-time-cmaf)";
+
     [Parameter]
     public string Id { get; set; }
     private HubConnection hubConnection; //for connecting to SignalR
@@ -38,9 +48,10 @@
     private readonly HttpClient _httpClient = new HttpClient(); //HttpClient for posting messages
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; }
-
+    private GameModel gm = new();
     private readonly string functionAppBaseUri = "http://localhost:7071/api/";
-
+    private string[] controlisnt = new string[9]{"play-large", "play",  "mute", "volume",  "settings", "pip", "airplay","live",
+            "fullscreen"};
     protected async override Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
@@ -57,6 +68,10 @@
         userInput = authState.User.Identity.Name;
         await hubConnection.StartAsync();
         Id = Id ?? "1";
+        gm = await gameService.GamesVideo(Id);
+        if(gm.streamID==2)
+            ad = "https://productdev-aase.streaming.media.azure.net/a26cf8a5-4a60-4d76-ba5a-11f5f092e7d5/84c07f41-bcab-4daa-acf8-f0a2c2134ca3.ism/manifest(format=mpd-time-cmaf)"
+    ;       
     }
     async Task SendAsync()
     {

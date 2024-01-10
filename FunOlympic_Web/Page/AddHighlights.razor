@@ -1,0 +1,205 @@
+﻿@inject INotificationService msg;
+@page "/AddHighlight"
+@using FunOlympic_Web.Helper;
+@using Microsoft.AspNetCore.Http;
+@using System.Net.Http.Headers;
+@inject IGamesService gameService;
+<Card Margin="Margin.Is4.FromBottom" Style="border:none">
+    <CardHeader>
+        <CardTitle>Add Highlights</CardTitle>
+    </CardHeader>
+    <CardBody>
+        <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" Model="@game" ValidateOnLoad="false" >
+            <Fields>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Team One</FieldLabel>
+                            <TextEdit Placeholder="Team One" @bind-Text="@game.Team1">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </FieldBody>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Team Two</FieldLabel>
+                            <TextEdit Placeholder="Team Two" @bind-Text="@game.team2">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </FieldBody>
+            </Fields>
+            <Fields>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Team One Score</FieldLabel>
+                            <NumericEdit TValue="int" Min="0" Placeholder="Team One" @bind-Value="@game.team1Score">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </NumericEdit>
+                        </Field>
+                    </Validation>
+                </FieldBody>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Team Two Score</FieldLabel>
+                        <NumericEdit TValue="int" Min="0" Placeholder="Team One" @bind-Value="@game.team2Score">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </NumericEdit>
+                        </Field>
+                    </Validation>
+                </FieldBody>
+            </Fields>
+            <Fields>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Game Date</FieldLabel>
+                            <DateEdit TValue="DateTime?" @bind-Date="@selectedDate" />                    
+                        </Field>
+                    </Validation>
+                </FieldBody>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Select Game Type</FieldLabel>
+                              <Select TValue="int" SelectedValue="@gameid">
+                    @{
+                      
+                        foreach (GameListModel g in gamelist)
+                        {
+                            <SelectItem Value="@g.Id">@g.GameName</SelectItem>
+                        }
+                    }
+                    </Select>
+                        </Field>
+                    </Validation>
+                </FieldBody>
+            </Fields>
+            <Fields>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Pick file</FieldLabel>
+                            <FileEdit Filter=".jpg, .png, .gif" Changed="OnChanged" @bind-value="@frm" />
+                            <Card>
+
+                                <CardImage Source="@imgUrl" Alt="Placeholder image" Style="object-fit: contain; height:200px; " />
+
+                            </Card>
+                        </Field>
+                    </Validation>
+                </FieldBody>
+                <FieldBody ColumnSize="ColumnSize.Is6.OnWidescreen.Is12.OnMobile">
+                    <Validation>
+                        <Field>
+                            <FieldLabel>Select Videos</FieldLabel>
+                            <FilePicker Filter=".mp4" Changed="OnChanged" @bind-value="@frm" />
+                        </Field>
+                    </Validation>
+                </FieldBody>
+            </Fields>
+          
+            <Button Color="Color.Primary" Clicked="Save" Disabled="@Disabled">Submit</Button>
+         
+        </Validations>
+    </CardBody>
+</Card>
+
+
+@code {
+    private IFormFile frm;
+    private GameImg? game;
+    Validations? validationsRef;
+    private bool Disabled = false;
+    private string? errorMessage;
+    public string SaveMesssage { get; set; } = "";
+    private int gameid = 0;
+    private int streams = 1;
+    DateTime? selectedDate=DateTime.Now;
+    DateTime? EndDate = DateTime.Now;
+    List<GameListModel> gamelist = new();
+    private StreamContent fileContent;
+    private string imgUrl = "img/banner.png";
+    private string imageType;
+    private string fileName;
+    private long _uploaded = 0;
+    private double _percentage = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        game = new GameImg();
+        gamelist = await gameService.GameLists();
+        await base.OnInitializedAsync();
+    }
+    async Task Save()
+    {
+
+
+
+        // Create an instance of ProgressiveStreamContent that we just created and we will pass the stream of the file for it
+        // and the 40096 which are 40KB per packet and the third argument which as a callback for the OnProgress event (u, p) are u = Uploaded bytes and P is the percentage
+
+        var content = new MultipartFormDataContent();
+        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+        content.Add(content: fileContent, name: "\"fromFile\"", fileName: fileName);
+        //content.Add(new StringContent(gameid.ToString()), "GameID");
+        //content.Add(new StringContent(game.GameDate.ToString()), "GameDate");
+        //content.Add(new StringContent(game.Team1.ToString()), "Team1");
+        //content.Add(new StringContent(game.team1Score.ToString()), "team1Score");
+        //content.Add(new StringContent(game.team2.ToString()), "team2");
+        //content.Add(new StringContent(game.team2Score.ToString()), "team2Score");
+        //content.Add(new StringContent(""), "LinktoGame");
+        //content.Add(new StringContent(game.Livestatus.ToString()), "Livestatus");
+        //content.Add(new StringContent(game.GameEndDate.ToString()), "GameEndDate");
+        //content.Add(new StringContent(game.Description.ToString()), "Description");
+        //content.Add(new StringContent(""), "photoloc");
+        await msg.Info("Live Added");
+
+
+    }
+ 
+    async Task OnChanged(FileChangedEventArgs e)
+    {
+
+        try
+        {
+            var file = e.Files.FirstOrDefault();
+            if (file == null)
+            {
+                return;
+            }          
+            using (MemoryStream result = new MemoryStream())
+            {
+                long maxFileSize = 1024 * 1024 * 15;
+                fileContent = new StreamContent( file.OpenReadStream(maxAllowedSize: maxFileSize));
+                fileName = file.Name;
+
+                var fileSize = new byte[file.Size];
+                 await file.OpenReadStream(maxAllowedSize: maxFileSize).ReadAsync(fileSize);
+                imageType = file.Type;
+                imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(fileSize)}";
+            }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+            }
+            finally
+            {
+                this.StateHasChanged();
+            }
+        
+    }
+}

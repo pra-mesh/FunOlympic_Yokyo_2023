@@ -1,6 +1,4 @@
 ﻿using FunOlympicDataManager.Library.ResponseModel;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -24,7 +22,7 @@ public class RefreshTokenModel
     public bool IsRevoked => Revoked != null;
     public bool IsActive => !IsRevoked && !IsExpired;
 }
-public class RefreshTokenResponse : BaseResponse 
+public class RefreshTokenResponse : BaseResponse
 {
     public RefreshTokenModel data { get; set; }
 }

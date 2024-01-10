@@ -2,29 +2,23 @@
 @inject NavigationManager Navigate;
 @inject IAuthenticationService ia;
 @inject INotificationService msg;
-
 <Row>
-    <Column ColumnSize="ColumnSize.Is4.OnDesktop">
-       
-        <div>
-            <h1 style="font-size:25px"> Fun Olympic Yokyo 2023</h1>
-         
-            <Image Source="/img/icon.png" Alt="Fun Olympic"  Style="justify-content:center"/>
-           
-        </div>
-        
-        </Column>
-    <Column ColumnSize="ColumnSize.Is4.OnDesktop">
+    <Column ColumnSize="ColumnSize.Is2.OnDesktop.Is12.OnTablet" />
+    <Column ColumnSize="ColumnSize.Is4.OnDesktop.Is6.OnTablet">
+        <h1 style="font-size:25px"> Fun Olympic Yokyo 2023</h1>
+        <Image Source="/img/icon.png" Alt="Fun Olympic" Style="object-fit: contain;" />
+    </Column>
+    <Column ColumnSize="ColumnSize.Is4.OnDesktop.Is6.OnTablet">
         <Card Margin="Margin.Is4.FromBottom" Style="border:none">
             <CardHeader>
                 <CardTitle>Login</CardTitle>
             </CardHeader>
             <CardBody>
                 <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" Model="@user" ValidateOnLoad="false">
-                    <Validation >
+                    <Validation>
                         <Field>
                             <FieldLabel>Email address</FieldLabel>
-                            <TextEdit Placeholder="Enter email" @bind-Text="@user.userName" >
+                            <TextEdit Placeholder="Enter email" @bind-Text="@user.userName">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -40,10 +34,8 @@
                                     <ValidationError />
                                 </Feedback>
                             </TextEdit>
-
                         </Field>
                     </Validation>
-
                     <Field>
                         <GoogleRecaptcha SuccessCallBack="SuccessCallBack"
                                          TimeOutCallBack="TimeOutCallBack"
@@ -51,15 +43,15 @@
                                          ServerSideValidationHandler="ServerSideValidationHandler">
                         </GoogleRecaptcha>
                     </Field>
+                    <Row Margin="Margin.Is3.FromBottom.Is2.FromStart">
+                        <Anchor To="/ResetPassword" >Forgot Password </Anchor>
+                    </Row>
                     <Button Color="Color.Primary" Clicked="LoginClicked" Disabled="@isvalid">Submit</Button>
-                <Field>
-                    <Span>@LoginMesssage</Span>
-                </Field>
+                   
                 </Validations>
             </CardBody>
         </Card>
     </Column>
-   
 </Row>
 @code {
     private LoginModel? user;
@@ -72,10 +64,7 @@
     protected override Task OnInitializedAsync()
     {
         user = new LoginModel();
-       
-
         return base.OnInitializedAsync();
-
     }
     void TimeOutCallBack(CaptchaTimeOutEventArgs e)
     {
@@ -84,14 +73,14 @@
         Console.WriteLine($"Captcha Time Out with message {e.ErrorMessage}");
         errorMessage = $"Captcha Timeout: {e.ErrorMessage}";
     }
-
     void SuccessCallBack(CaptchaSuccessEventArgs e)
     {
-       
+
         captchaResponse = e.CaptchaResponse;
         Disabled = false;
         base.StateHasChanged();
     }
+
     private void ServerSideValidationError(CaptchaServerSideValidationErrorEventArgs e)
     {
         Disabled = true;
@@ -103,12 +92,12 @@
         isvalid = false;
         return new ServerSideCaptchaValidationResultModel(true, "Success");
     }
+   
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
 
     }
-
     async Task LoginClicked()
     {
         if (await validationsRef!.ValidateAll())
@@ -130,13 +119,8 @@
                 Navigate.NavigateTo("/Disabled");
 
             }
-             msg.Info(LoginMesssage, "Login");
-           
+            msg.Info(LoginMesssage, "Login");
+
         }
     }
-
-   
-
-
 }
-나는 당신을 섹스하고 싶어

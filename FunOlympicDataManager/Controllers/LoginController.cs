@@ -1,14 +1,7 @@
 ﻿using FunOlympicDataManager.Authorization;
 using FunOlympicDataManager.Helpers;
-using FunOlympicDataManager.Library.DataAccess.Interface;
 using FunOlympicDataManager.Library.Models;
-using FunOlympicDataManager.Library.ResponseModel;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
-using System.Security.Claims;
 
 namespace FunOlympicDataManager.Controllers;
 [Route("api/[controller]")]
@@ -33,7 +26,7 @@ public class LoginController : ControllerBase
         {
             setTokenCookie(data.token, data.RefreshToken);
             setReTokenCookie(data.token, data.RefreshToken);
-        }       
+        }
         return Ok(response);
     }
     private void setTokenCookie(string token, string refreshToken)
@@ -48,7 +41,7 @@ public class LoginController : ControllerBase
 
         };
         Response.Cookies.Append("Token", token, cookieOptions);
-       
+
 
     }
     private void setReTokenCookie(string token, string refreshToken)

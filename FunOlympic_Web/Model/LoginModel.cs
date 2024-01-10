@@ -9,7 +9,7 @@ public class LoginModel
 {
     [DisplayName("Email")]
     [Required]
-    [EmailAddress (ErrorMessage ="Invalid Format"),]
+    [EmailAddress(ErrorMessage = "Invalid Format"),]
 
     public string userName { get; set; }
     [Required]

@@ -36,6 +36,7 @@
 		<PackageReference Include="Blazorise" Version="1.2.*" />
 		<PackageReference Include="Blazorise.AntDesign" Version="1.2.*" />
 		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

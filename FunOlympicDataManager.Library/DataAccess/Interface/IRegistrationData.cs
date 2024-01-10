@@ -7,4 +7,7 @@ public interface IRegistrationData
     UsersResponse Registration(UserModel userModel);
     UsersResponse Activate(string userID);
     UsersResponse UserInfo(string id);
+    StringResponse changepassword(LoginModel loginModel);
+    Task<StringResponse> SendResetCodeAsync(MailData gm);
+    StringResponse RestCodeValid(PasswordReset gm);
 }

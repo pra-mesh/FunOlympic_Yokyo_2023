@@ -5,7 +5,7 @@ namespace FunOlympicDataManager.Library.ResponseModel
 {
     public class UsersResponse : BaseResponse
     {
-        public UserInfoModel ? data { get; set; }
+        public UserInfoModel? data { get; set; }
     }
 
     public class UsersListResponse : BaseResponse

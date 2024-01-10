@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FunOlympicDataManager.Library.Models;
+﻿namespace FunOlympicDataManager.Library.Models;
 public class MailData
 {
     // Receiver
     public string To { get; }
-  
+
 
     // Sender
     public string? From { get; }
@@ -23,7 +17,7 @@ public class MailData
     // Content
     public string Subject { get; }
 
-    public string? Body { get; }
+    public string? Body { get; set; }
 
     public MailData(string to, string subject, string? body = null, string? from = null, string? displayName = null, string? replyTo = null, string? replyToName = null)
     {

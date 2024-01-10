@@ -1,5 +1,4 @@
-﻿using Blazorise;
-using Blazorise.Localization;
+﻿using Blazorise.Localization;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -14,7 +13,7 @@ public partial class MainLayout
 
     [CascadingParameter] protected Task<AuthenticationState>? AuthStat { get; set; }
 
-    
+
     protected override async Task OnInitializedAsync()
     {
         await SelectCulture("en-US");

@@ -1,5 +1,4 @@
 ﻿using Blazored.SessionStorage;
-using Blazorise;
 using Blazorise.AntDesign;
 using Blazorise.Icons.FontAwesome;
 using FunOlympic_Web;
@@ -38,6 +37,7 @@ builder.Services.AddHttpClient("API", options =>
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ISignUpservices, SignUpservices>();
 builder.Services.AddScoped<IUserManagerService, UserManagerService>();
+builder.Services.AddScoped<IGamesService,GamesService>();
 AddBlazorise(builder.Services);
 
 await builder.Build().RunAsync();

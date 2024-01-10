@@ -23,7 +23,7 @@ public class ErrorHandlerMiddleware
             var response = context.Response;
             response.ContentType = "application/json";
 
-            switch(error)
+            switch (error)
             {
                 //case AppException e:
                 //    // custom application error
@@ -39,7 +39,7 @@ public class ErrorHandlerMiddleware
                     break;
             }
 
-            var result = JsonSerializer.Serialize(new { statusMessage = error?.Message, statusCode =5});
+            var result = JsonSerializer.Serialize(new { statusMessage = error?.Message, statusCode = 5 });
             await response.WriteAsync(result);
         }
     }

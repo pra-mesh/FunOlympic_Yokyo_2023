@@ -1,18 +1,14 @@
-﻿using FunOlympic_Web.Helper;
+﻿using Blazored.SessionStorage;
+using FunOlympic_Web.Helper;
 using FunOlympic_Web.Model;
 using FunOlympic_Web.Model.ResponseModel;
-
-using Blazored.SessionStorage;
+using FunOlympic_Web.Services.Interface;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using System.Net.Http;
-using FunOlympic_Web.Services.Interface;
 
 namespace FunOlympic_Web.Services.Implementation;
 

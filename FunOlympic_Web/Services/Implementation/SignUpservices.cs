@@ -1,17 +1,12 @@
-﻿
-using FunOlympic_Web;
+﻿using Blazored.SessionStorage;
+using FunOlympic_Web.Helper;
 using FunOlympic_Web.Model;
-
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text;
 using FunOlympic_Web.Model.ResponseModel;
 using FunOlympic_Web.Services.Interface;
 using Microsoft.AspNetCore.Components;
-using FunOlympic_Web.Model;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Blazored.SessionStorage;
-using FunOlympic_Web.Helper;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace FunOlympic_Web.Services.Implementation;
 
@@ -34,22 +29,22 @@ public class SignUpservices : ISignUpservices
         Guid guid = Guid.NewGuid();
         um.Id = guid.ToString();
         var baseuri = _navigation.BaseUri;
-        var baseurl = baseuri + "/activate/"+um.Id;
+        var baseurl = baseuri + "/activate/" + um.Id;
         var Message = "<br/><br/>Welcome to Advance Cyber Security.<br/>Your Activation Link is <br/>" + " <br/><br/><a href='" + baseurl + "'>Click Here</a> ";
-        MailData md = new MailData(um.Email, "Welcome to Fun Olympic 2023", Message,"support@funolympic.com", um.FirstName + ' ' + um.LastName, "support@funolympic.com", "Fun Olympic");
+        MailData md = new MailData(um.Email, "Welcome to Fun Olympic 2023", Message, "support@funolympic.com", um.FirstName + ' ' + um.LastName, "support@funolympic.com", "Fun Olympic");
         string payload2 = JsonSerializer.Serialize(md);
         var content2 = new StringContent(payload2, Encoding.UTF8, "application/json");
         var authResult2 = await client.PostAsync("/api/Registration/sendmail", content2);
 
         if (authResult2.IsSuccessStatusCode != true)
         {
-            
+
             resgiter = "Invalid Email Address or try again later";
         }
         else
         {
-            um.Password = Utility.Encrypt(um.Password); 
-            
+            um.Password = Utility.Encrypt(um.Password);
+
             UsersResponse ur = new UsersResponse();
             string payload = JsonSerializer.Serialize(um);
             var content = new StringContent(payload, Encoding.UTF8, "application/json");
@@ -80,14 +75,14 @@ public class SignUpservices : ISignUpservices
 
     public async Task<string> ResendMail()
     {
-       
+
         var userID = await _localStorage.GetItemAsync<string>("tempStoredValue");
         var userName = await _localStorage.GetItemAsync<string>("userName");
         var Email = await _localStorage.GetItemAsync<string>("Email");
         var client = _httpClientFactory.CreateClient("API");
         string resgiter = "Not Registered";
         Guid guid = Guid.NewGuid();
-       
+
         var baseuri = _navigation.BaseUri;
         var baseurl = baseuri + "/activate/" + userID;
         var Message = "<br/><br/>Welcome to Advance Cyber Security.<br/>Your Activation Link is <br/>" + " <br/><br/><a href='" + baseurl + "'>Click Here</a> ";
@@ -107,7 +102,7 @@ public class SignUpservices : ISignUpservices
         }
         return resgiter;
     }
-    public async Task<string> Activate(string  ID)
+    public async Task<string> Activate(string ID)
     {
         var client = _httpClientFactory.CreateClient("API");
         string resgiter = "Not Registered";
@@ -127,7 +122,7 @@ public class SignUpservices : ISignUpservices
 
         if (ur.statusCode == 0)
         {
-            if(ur.data  is null)
+            if (ur.data is null)
             {
                 resgiter = "Invalid Email Address or try again later";
                 return resgiter;
@@ -140,4 +135,32 @@ public class SignUpservices : ISignUpservices
         }
         return resgiter;
     }
+    public async Task<string> ForgetPassword(string Email)
+    {
+        var client = _httpClientFactory.CreateClient("API");
+        Guid guid = Guid.NewGuid();
+
+        Random r = new Random();
+        var x = r.Next(0, 1000000);
+
+        string s = x.ToString("000000"); 
+        var Message = "<br/><br/>Dear User<br/>Your resetcode is <br/>" + " <br/><br/> " + s + "</a> ";
+        MailData md = new MailData(Email, "Password Reset Request", Message, "support@funolympic.com", Email, "support@funolympic.com", "Fun Olympic");
+        string payload2 = JsonSerializer.Serialize(md);
+        var content2 = new StringContent(payload2, Encoding.UTF8, "application/json");
+        var authResult2 = await client.PostAsync("/api/Registration/sendmail", content2);
+
+        string status;
+        if (authResult2.IsSuccessStatusCode != true)
+        {
+
+            status = "Invalid Email Address or try again later";
+        }
+        else
+        {
+            status = "Success";
+        }
+        return status;
+    }
+
 }

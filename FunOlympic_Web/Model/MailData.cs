@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FunOlympic_Web;
+﻿namespace FunOlympic_Web;
 public class MailData
 {
     // Receiver
     public string To { get; }
-  
+
 
     // Sender
     public string? From { get; }

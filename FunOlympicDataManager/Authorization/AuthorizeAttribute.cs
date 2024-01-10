@@ -1,10 +1,8 @@
 namespace FunOlympicDataManager.Authorization;
 
-using FunOlympicDataManager.Authorization;
+using FunOlympicDataManager.Library.ResponseModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-
-using FunOlympicDataManager.Library.ResponseModel;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class AuthorizeAttribute : Attribute, IAuthorizationFilter
@@ -16,9 +14,9 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
         if (allowAnonymous)
             return;
 
-        // authorization
+        // authorization 
         var user = (UsersResponse)context.HttpContext.Items["User"];
-        if (user== null)
+        if (user == null)
             context.Result = new JsonResult(new { statusmessage = "Unauthorized", statuscode = 4 }) { StatusCode = StatusCodes.Status401Unauthorized };
     }
 }

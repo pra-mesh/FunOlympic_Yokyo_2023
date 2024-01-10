@@ -1,6 +1,6 @@
 
-using Microsoft.IdentityModel.Tokens;
 using FunOlympicDataManager.Library.Model;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -35,8 +35,8 @@ public class JwtUtils : IJwtUtils
             Subject = new ClaimsIdentity(new[] {
                 new Claim("id", user.UserID.ToString()),
                 new Claim("userName", user.UserName.ToString()) }),
-               
-            Expires = DateTime.UtcNow.AddMinutes(5),
+
+            Expires = DateTime.UtcNow.AddMinutes(60),
             NotBefore = DateTime.UtcNow,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key)
             , SecurityAlgorithms.HmacSha256Signature)

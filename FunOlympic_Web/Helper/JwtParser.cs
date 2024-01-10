@@ -1,27 +1,27 @@
-﻿using System.Text.Json;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using System.Text.Json;
 
 namespace FunOlympic_Web.Helper;
 
 public class JwtParser
 {
-    public static IEnumerable<Claim> ParseClaimsFromJwt (string jwt)
+    public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
-        var claims = new List<Claim> ();
+        var claims = new List<Claim>();
         var payload = jwt.Split('.')[1];
         var jsonBytes = ParseBase64WithoutPadding(payload);
-        var keyValuePairs =JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+        var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
         ExtractRolesFromJWT(claims, keyValuePairs);
         claims.AddRange(keyValuePairs.Select(x => new Claim(x.Key, x.Value.ToString())));
         return claims;
     }
     private static void ExtractRolesFromJWT(List<Claim> claims, Dictionary<string, object> keyValuePairs)
     {
-        keyValuePairs.TryGetValue(ClaimTypes.Role, out  object roles);
+        keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
         if (roles is not null)
         {
             var parseRoles = roles.ToString().Trim().TrimStart('[').TrimEnd(']').Split(',');
-            if(parseRoles.Length > 1 )
+            if (parseRoles.Length > 1)
             {
                 foreach (var parsedRole in parseRoles)
                 {

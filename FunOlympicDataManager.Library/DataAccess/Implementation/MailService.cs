@@ -4,11 +4,6 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FunOlympicDataManager.Library.DataAccess.Implementation;
 public class MailService : IMailService
@@ -32,14 +27,14 @@ public class MailService : IMailService
             mail.Sender = new MailboxAddress(mailData.DisplayName ?? _settings.DisplayName, mailData.From ?? _settings.From);
 
             // Receiver
-         
-                mail.To.Add(MailboxAddress.Parse(mailData.To));
+
+            mail.To.Add(MailboxAddress.Parse(mailData.To));
 
             // Set Reply to if specified in mail data
             if (!string.IsNullOrEmpty(mailData.ReplyTo))
                 mail.ReplyTo.Add(new MailboxAddress(mailData.ReplyToName, mailData.ReplyTo));
 
-          
+
             #endregion
 
             #region Content

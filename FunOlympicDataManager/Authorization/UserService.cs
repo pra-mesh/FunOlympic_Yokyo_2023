@@ -13,7 +13,7 @@ public interface IUserService
     RefreshTokenListResponse GetById(string userID);
     LoginResponse RefreshToken(string token, string ipAddress);
     RefreshTokenResponse RevokeToken(string token, string ipAddress);
-    
+
 }
 
 
@@ -22,14 +22,14 @@ public class UserService : IUserService
     private readonly ILoginData _login;
     private readonly IJwtUtils _jwtUtils;
     private readonly ISqlDataAccess _sql;
-   
+
 
     public UserService(ILoginData login, IJwtUtils jwtUtils, ISqlDataAccess sql)
     {
         _login = login;
         _jwtUtils = jwtUtils;
         _sql = sql;
-       
+
     }
 
     public LoginResponse Authenticate(LoginModel model, string ipAddress)
@@ -69,15 +69,15 @@ public class UserService : IUserService
         catch (Exception ex)
         {
             sr.statusCode = 3;
-            sr.statusMessage= ex.Message;
+            sr.statusMessage = ex.Message;
             sr.data = null;
         }
         return sr;
         // save changes to db
-        
+
     }
 
-    
+
 
     private void InsertRefreshToken(RefreshTokenModel refreshToken)
     {
@@ -91,7 +91,7 @@ public class UserService : IUserService
         LoginResponse sr = new();
 
         var tokenModel = getUserByRefreshToken(token);
-        if(tokenModel == null)
+        if (tokenModel == null)
         {
             sr.statusMessage = "Invalid Refresh token";
             sr.statusCode = 2;
@@ -100,25 +100,25 @@ public class UserService : IUserService
         string q = @"select UserName from Users where ID=@userid";
         var p = new { userid = tokenModel.UserID };
         string username = _sql.LoadFirstData<string, dynamic>(q, p, "SqlConn");
-        if (username == null || username.Trim() =="")
+        if (username == null || username.Trim() == "")
         {
             sr.statusCode = 1;
             sr.statusMessage = "Warning user not found";
             return sr;
         }
-       
+
         if (tokenModel.IsRevoked)
         {
             // revoke all descendant tokens in case this token has been compromised
-            revokeDescendantRefreshTokens( tokenModel, ipAddress,
-                $"Attempted reuse of revoked ancestor token: {token}");           
+            revokeDescendantRefreshTokens(tokenModel, ipAddress,
+                $"Attempted reuse of revoked ancestor token: {token}");
         }
 
         if (!tokenModel.IsActive)
         {
             sr.statusCode = 2;
             sr.statusMessage = "Invalid Token";
-            return sr;        
+            return sr;
         }
 
         // replace old refresh token with a new one (rotate token)
@@ -127,11 +127,11 @@ public class UserService : IUserService
         newRefreshToken.UserID = tokenModel.UserID;
         InsertRefreshToken(newRefreshToken);
 
-         // remove old refresh tokens from user
-         removeOldRefreshTokens(tokenModel);
+        // remove old refresh tokens from user
+        removeOldRefreshTokens(tokenModel);
 
         // save changes to db
-        UserIDModel user = new ();
+        UserIDModel user = new();
         user.UserID = tokenModel.UserID;
         user.UserName = username;
         // generate new jwt
@@ -140,7 +140,7 @@ public class UserService : IUserService
         data.ID = newRefreshToken.UserID;
         data.RefreshToken = newRefreshToken.Token;
         data.token = jwtToken;
-        
+
         sr.data = data;
         sr.statusMessage = "Success";
         sr.statusCode = 0;
@@ -152,7 +152,7 @@ public class UserService : IUserService
         RefreshTokenResponse sr = new();
         try
         {
-            if(token == null)
+            if (token == null)
             {
                 sr.statusMessage = "Token is required";
                 sr.statusCode = 1;
@@ -175,7 +175,7 @@ public class UserService : IUserService
             // revoke token and save
             sr = revokeRefreshToken(refreshToken, ipAddress, "Revoked without replacement");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             sr.statusMessage = e.Message;
             sr.statusCode = 3;
@@ -195,7 +195,7 @@ public class UserService : IUserService
             }
             string q = "select * from Activeuser where UserID=@UserID";
             var p = new { UserID = userID };
-          
+
             var user = _sql.LoadDataq<RefreshTokenModel, dynamic>(q, p, "SqlConn");
             sr.statusMessage = "Success";
             sr.statusCode = 0;
@@ -214,7 +214,7 @@ public class UserService : IUserService
     private RefreshTokenModel getUserByRefreshToken(string token)
     {
         string q = "select * from Activeuser where Token=@Token";
-        var p= new {Token = token};
+        var p = new { Token = token };
 
         var user = _sql.LoadFirstData<RefreshTokenModel, dynamic>(q, p, "SqlConn");
 
@@ -240,9 +240,9 @@ public class UserService : IUserService
             var p = new { UserID = refreshToken.UserID };
             _sql.SaveDataQ(q, p, "SqlConn");
         }
-        catch { }     
+        catch { }
     }
-    private void revokeDescendantRefreshTokens(RefreshTokenModel refreshToken,  string ipAddress, string reason)
+    private void revokeDescendantRefreshTokens(RefreshTokenModel refreshToken, string ipAddress, string reason)
     {
         // recursively traverse the refresh token chain and ensure all descendants are revoked
         if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))

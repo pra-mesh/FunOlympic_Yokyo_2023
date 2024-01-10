@@ -36,11 +36,11 @@ public class UserServices : IUserServices
             var response = await _httpClient.SendAsync(requestMessage);
 
             var responseStatusCode = response.StatusCode;
-             responseBody = await response.Content.ReadAsStringAsync();
+            responseBody = await response.Content.ReadAsStringAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            
+
         }
         var returnedUser = JsonConvert.DeserializeObject<LoginResponse>(responseBody);
 
